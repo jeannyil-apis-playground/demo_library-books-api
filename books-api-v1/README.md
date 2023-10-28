@@ -1,6 +1,6 @@
 # books-api-v1
 
-This project leverages **Red Hat build of Quarkus 3.2.x**, the Supersonic Subatomic Java Framework. More specifically, the project is implemented using [**Red Hat Camel Extensions for Quarkus 3.2.x**](https://access.redhat.com/documentation/en-us/red_hat_integration/2023.q1/html/getting_started_with_camel_extensions_for_quarkus/index).
+This project leverages **Red Hat build of Quarkus 3.2.x**, the Supersonic Subatomic Java Framework. More specifically, the project is implemented using [**Red Hat Camel Extensions for Quarkus (RHCEQ) 3.2.x**](https://access.redhat.com/documentation/en-us/red_hat_integration/2023.q1/html/getting_started_with_camel_extensions_for_quarkus/index).
 
 This project implements a simple REST API that returns a list of books. The following endpoints are exposed:
 - `/api/v1/books` : returns a list of all `Books-v1` entities.
@@ -57,7 +57,7 @@ You can then execute your native executable with: `./target/books-api-v1-1.0.0-S
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
 
-## Deploy to OpenShift
+## Deploy the RHCEQ application to OpenShift
 
 ### Instructions
 
@@ -71,7 +71,7 @@ If you want to learn more about building native executables, please consult http
     oc new-project ceq-services-jvm --display-name="Red Hat Camel Extensions for Quarkus Apps - JVM Mode"
     ```
 
-3. Deploy the CEQ service
+3. Package and deploy the RHCEQ service to OpenShift
     ```script shell
     ./mvnw clean package -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.group=ceq-services-jvm
     ```
