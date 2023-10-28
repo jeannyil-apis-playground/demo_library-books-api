@@ -75,7 +75,7 @@ quarkus:
     # large, eviction of previously selected resources could be triggered
     # with <code>excludePatterns</code>.
     resources:
-      includes: openapi/*
+      includes: openapi/*,META-INF/resources/index.html
 
   ## Camel Quarkus
   camel:

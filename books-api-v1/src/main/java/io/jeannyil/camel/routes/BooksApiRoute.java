@@ -16,9 +16,6 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.model.rest.RestBindingMode;
 
-import io.jeannyil.models.Author;
-import io.jeannyil.models.BookV1;
-import io.jeannyil.models.BookV2;
 import io.jeannyil.models.BookV1;
 
 /* BooksApi route definition
