@@ -1,0 +1,121 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Library Books API (v1)",
+        "version": "1.0.0",
+        "description": "Manages a library books inventory"
+    },
+    "servers": [
+        {
+            "url": "http://books-api-v1.ceq-services-jvm.svc.cluster.local/api/v1",
+            "description": "Server URL"
+        }
+    ],
+    "paths": {
+        "/books": {
+            "summary": "Path used to manage the list of books-v1.",
+            "description": "The REST endpoint/path used to list and create zero or more `books-v1` entities.  This path contains a `GET` operation to perform the list tasks.",
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/books-v1"
+                                    }
+                                },
+                                "examples": {
+                                    "Books-v1": {
+                                        "value": [
+                                            {
+                                                "authorName": "Mary Shelley",
+                                                "copies": 10,
+                                                "title": "Frankenstein",
+                                                "year": 1818
+                                            },
+                                            {
+                                                "authorName": "Charles Dickens",
+                                                "copies": 5,
+                                                "title": "A Christmas Carol",
+                                                "year": 1843
+                                            },
+                                            {
+                                                "authorName": "Jane Austen",
+                                                "copies": 3,
+                                                "title": "Pride and Prejudice",
+                                                "year": 1813
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `books-v1` entities."
+                    }
+                },
+                "operationId": "getBooks-v1",
+                "summary": "List All books-v1",
+                "description": "Gets a list of all `Books-v1` entities."
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "books-v1": {
+                "title": "Root Type for books-v1",
+                "description": "List of Books (v1)",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "authorName": {
+                            "type": "string"
+                        },
+                        "copies": {
+                            "format": "int32",
+                            "type": "integer"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "year": {
+                            "format": "int32",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "example": [
+                    {
+                        "authorName": "Mary Shelley",
+                        "copies": 10,
+                        "title": "Frankenstein",
+                        "year": 1818
+                    },
+                    {
+                        "authorName": "Charles Dickens",
+                        "copies": 5,
+                        "title": "A Christmas Carol",
+                        "year": 1843
+                    },
+                    {
+                        "authorName": "Jane Austen",
+                        "copies": 3,
+                        "title": "Pride and Prejudice",
+                        "year": 1813
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Books",
+            "description": ""
+        }
+    ]
+}
