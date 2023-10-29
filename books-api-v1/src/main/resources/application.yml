@@ -52,13 +52,24 @@ quarkus:
 
   # OpenTelemetry configuration. This is leveraged by Camel Quarkus OpenTelemetry extension
   ## Identifier for the origin of spans created by the application
-  application:
-    name: ${camel.context.name}
-  opentelemetry:
-      tracer:
-          exporter:
-              otlp:
-                  endpoint: http://localhost:4317
+  # application:
+  #   name: ${camel.context.name}
+  # opentelemetry:
+  #     tracer:
+  #         exporter:
+  #             otlp:
+  #                 endpoint: http://localhost:4317
+
+  # OpenTracing configuration. This is leveraged by Camel Quarkus OpenTracing extension
+  jaeger:
+    # The service name
+    service-name: ${camel.context.name}
+    # The sampler type (const, probabilistic, ratelimiting or remote)
+    sampler-type: const
+    # The sampler parameter
+    sampler-param: 1
+    # The traces endpoint to the Collector
+    endpoint: http://localhost:14268/api/traces
 
   ## Quarkus native build 
   native:

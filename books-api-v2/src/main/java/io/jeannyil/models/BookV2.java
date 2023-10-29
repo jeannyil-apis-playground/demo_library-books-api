@@ -3,7 +3,7 @@ package io.jeannyil.models;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import jakarta.annotation.Generated;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
