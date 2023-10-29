@@ -1,6 +1,6 @@
 # books-api-v1
 
-This project leverages **Red Hat build of Quarkus 3.2.x**, the Supersonic Subatomic Java Framework. More specifically, the project is implemented using [**Red Hat Camel Extensions for Quarkus (RHCEQ) 3.2.x**](https://access.redhat.com/documentation/en-us/red_hat_integration/2023.q1/html/getting_started_with_camel_extensions_for_quarkus/index).
+This project leverages **Red Hat build of Quarkus 2.13.x**, the Supersonic Subatomic Java Framework. More specifically, the project is implemented using [**Red Hat Camel Extensions for Quarkus (RHCEQ) 2.13.x**](https://access.redhat.com/documentation/en-us/red_hat_integration/2023.q1/html/getting_started_with_camel_extensions_for_quarkus/index).
 
 This project implements a simple REST API that returns a list of books. The following endpoints are exposed:
 - `/api/v1/books` : returns a list of all `Books-v1` entities.
@@ -182,7 +182,7 @@ _**:warning: cluster-admin privileges are required**_
 
 3. Test the `/api/v1/openapi.json` endpoint
     ```shell script
-    http -v $URL/api/v1/openapi.json
+    http $URL/api/v1/openapi.json
     ```
     ```console
     [...]
@@ -313,39 +313,27 @@ _**:warning: cluster-admin privileges are required**_
 
 4. Test the `/q/health` endpoint
     ```shell script
-    http -v $URL/q/health
+    http $URL/q/health
     ```
     ```console
     HTTP/1.1 200 OK
     cache-control: private
-    content-length: 869
+    content-length: 525
     content-type: application/json; charset=UTF-8
-    set-cookie: 9dcf4baeb4aaf2796beba21cfecc7c84=856c62033c73b0742c8900676fff2289; path=/; HttpOnly
+    set-cookie: 9dcf4baeb4aaf2796beba21cfecc7c84=853ce15fc7754dc9027d0d018ffe2f0a; path=/; HttpOnly
 
     {
         "checks": [
-            {
-                "data": {
-                    "check.kind": "ALL",
-                    "context.name": "books-api-v1",
-                    "context.phase": "5",
-                    "context.status": "Started",
-                    "context.version": "4.0.0"
-                },
-                "name": "context",
-                "status": "UP"
-            },
             {
                 "name": "camel-routes",
                 "status": "UP"
             },
             {
                 "data": {
-                    "check.kind": "ALL",
+                    "check.kind": "READINESS",
                     "context.name": "books-api-v1",
-                    "context.phase": "5",
                     "context.status": "Started",
-                    "context.version": "4.0.0"
+                    "context.version": "3.18.6.redhat-00007"
                 },
                 "name": "context",
                 "status": "UP"
@@ -361,292 +349,282 @@ _**:warning: cluster-admin privileges are required**_
 
 5. Test the `/q/metrics` endpoint
     ```shell script
-    http -v $URL/q/metrics
+    http $URL/q/metrics
     ```
     ```console
     [...]
     HTTP/1.1 200 OK
     cache-control: private
-    content-length: 23062
-    content-type: application/openmetrics-text; version=1.0.0; charset=utf-8
-    set-cookie: 9dcf4baeb4aaf2796beba21cfecc7c84=856c62033c73b0742c8900676fff2289; path=/; HttpOnly
+    content-length: 21520
+    content-type: text/plain; version=0.0.4; charset=utf-8
+    set-cookie: 9dcf4baeb4aaf2796beba21cfecc7c84=853ce15fc7754dc9027d0d018ffe2f0a; path=/; HttpOnly
 
-    # TYPE worker_pool_queue_size gauge
-    # HELP worker_pool_queue_size Number of pending elements in the waiting queue
-    worker_pool_queue_size{pool_name="vert.x-internal-blocking",pool_type="worker"} 0.0
-    worker_pool_queue_size{pool_name="vert.x-worker-thread",pool_type="worker"} 0.0
-    # TYPE worker_pool_idle gauge
-    # HELP worker_pool_idle The number of resources from the pool currently used
-    worker_pool_idle{pool_name="vert.x-internal-blocking",pool_type="worker"} 20.0
-    worker_pool_idle{pool_name="vert.x-worker-thread",pool_type="worker"} 19.0
-    # TYPE jvm_memory_max_bytes gauge
+    # HELP jvm_classes_unloaded_classes_total The total number of classes unloaded since the Java virtual machine has started execution
+    # TYPE jvm_classes_unloaded_classes_total counter
+    jvm_classes_unloaded_classes_total 58.0
+    # HELP jvm_memory_used_bytes The amount of used memory
+    # TYPE jvm_memory_used_bytes gauge
+    jvm_memory_used_bytes{area="nonheap",id="CodeHeap 'profiled nmethods'",} 8522496.0
+    jvm_memory_used_bytes{area="heap",id="PS Old Gen",} 1.0910728E7
+    jvm_memory_used_bytes{area="heap",id="PS Survivor Space",} 1422824.0
+    jvm_memory_used_bytes{area="heap",id="PS Eden Space",} 2029216.0
+    jvm_memory_used_bytes{area="nonheap",id="Metaspace",} 4.5207944E7
+    jvm_memory_used_bytes{area="nonheap",id="CodeHeap 'non-nmethods'",} 1354496.0
+    jvm_memory_used_bytes{area="nonheap",id="Compressed Class Space",} 5868048.0
+    jvm_memory_used_bytes{area="nonheap",id="CodeHeap 'non-profiled nmethods'",} 1690496.0
     # HELP jvm_memory_max_bytes The maximum amount of memory in bytes that can be used for memory management
-    jvm_memory_max_bytes{area="nonheap",id="CodeHeap 'profiled nmethods'"} 1.22912768E8
-    jvm_memory_max_bytes{area="heap",id="PS Old Gen"} 1.441792E8
-    jvm_memory_max_bytes{area="heap",id="PS Survivor Space"} 1048576.0
-    jvm_memory_max_bytes{area="heap",id="PS Eden Space"} 6.9730304E7
-    jvm_memory_max_bytes{area="nonheap",id="Metaspace"} -1.0
-    jvm_memory_max_bytes{area="nonheap",id="CodeHeap 'non-nmethods'"} 5828608.0
-    jvm_memory_max_bytes{area="nonheap",id="Compressed Class Space"} 1.073741824E9
-    jvm_memory_max_bytes{area="nonheap",id="CodeHeap 'non-profiled nmethods'"} 1.22916864E8
-    # TYPE system_load_average_1m gauge
-    # HELP system_load_average_1m The sum of the number of runnable entities queued to available processors and the number of runnable entities running on the available processors averaged over a period of time
-    system_load_average_1m 4.65
-    # TYPE camel_exchanges counter
-    # HELP camel_exchanges Total number of processed exchanges
-    camel_exchanges_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService"} 4.0 # {span_id="5b6c845929891da6",trace_id="c23dec07ed0c872578cd146b7d8f864d"} 1.0 1698517666.232
-    camel_exchanges_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService"} 2.0 # {span_id="718823ab465c7700",trace_id="248a3fba31d24f0839b2b99d39ab79b5"} 1.0 1698517783.068
-    camel_exchanges_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService"} 2.0 # {span_id="13f8dc9fa0c4e5ff",trace_id="248a3fba31d24f0839b2b99d39ab79b5"} 1.0 1698517783.068
-    camel_exchanges_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService"} 4.0 # {span_id="5bfdc681ee83c60c",trace_id="c23dec07ed0c872578cd146b7d8f864d"} 1.0 1698517666.232
-    # TYPE process_uptime_seconds gauge
-    # HELP process_uptime_seconds The uptime of the Java virtual machine
-    process_uptime_seconds 1666.865
-    # TYPE worker_pool_active gauge
-    # HELP worker_pool_active The number of resources from the pool currently used
-    worker_pool_active{pool_name="vert.x-internal-blocking",pool_type="worker"} 0.0
-    worker_pool_active{pool_name="vert.x-worker-thread",pool_type="worker"} 1.0
-    # TYPE jvm_buffer_count_buffers gauge
+    # TYPE jvm_memory_max_bytes gauge
+    jvm_memory_max_bytes{area="nonheap",id="CodeHeap 'profiled nmethods'",} 1.22912768E8
+    jvm_memory_max_bytes{area="heap",id="PS Old Gen",} 1.441792E8
+    jvm_memory_max_bytes{area="heap",id="PS Survivor Space",} 1572864.0
+    jvm_memory_max_bytes{area="heap",id="PS Eden Space",} 6.8681728E7
+    jvm_memory_max_bytes{area="nonheap",id="Metaspace",} -1.0
+    jvm_memory_max_bytes{area="nonheap",id="CodeHeap 'non-nmethods'",} 5828608.0
+    jvm_memory_max_bytes{area="nonheap",id="Compressed Class Space",} 1.073741824E9
+    jvm_memory_max_bytes{area="nonheap",id="CodeHeap 'non-profiled nmethods'",} 1.22916864E8
+    # HELP CamelExchangesTotal_total  
+    # TYPE CamelExchangesTotal_total counter
+    CamelExchangesTotal_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelExchangesTotal_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelExchangesTotal_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelExchangesTotal_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService",} 1.0
+    # HELP worker_pool_idle The number of resources from the pool currently used
+    # TYPE worker_pool_idle gauge
+    worker_pool_idle{pool_name="vert.x-internal-blocking",pool_type="worker",} 20.0
+    worker_pool_idle{pool_name="vert.x-worker-thread",pool_type="worker",} 19.0
+    # HELP CamelRoutePolicy_seconds_max  
+    # TYPE CamelRoutePolicy_seconds_max gauge
+    CamelRoutePolicy_seconds_max{camelContext="books-api-v1",failed="false",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService",} 0.108988613
+    CamelRoutePolicy_seconds_max{camelContext="books-api-v1",failed="false",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService",} 0.624346305
+    CamelRoutePolicy_seconds_max{camelContext="books-api-v1",failed="false",routeId="route1",serviceName="MicrometerRoutePolicyService",} 0.002239652
+    CamelRoutePolicy_seconds_max{camelContext="books-api-v1",failed="false",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService",} 0.004595063
+    # HELP CamelRoutePolicy_seconds  
+    # TYPE CamelRoutePolicy_seconds summary
+    CamelRoutePolicy_seconds_count{camelContext="books-api-v1",failed="false",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelRoutePolicy_seconds_sum{camelContext="books-api-v1",failed="false",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService",} 0.108988613
+    CamelRoutePolicy_seconds_count{camelContext="books-api-v1",failed="false",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelRoutePolicy_seconds_sum{camelContext="books-api-v1",failed="false",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService",} 0.624346305
+    CamelRoutePolicy_seconds_count{camelContext="books-api-v1",failed="false",routeId="route1",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelRoutePolicy_seconds_sum{camelContext="books-api-v1",failed="false",routeId="route1",serviceName="MicrometerRoutePolicyService",} 0.002239652
+    CamelRoutePolicy_seconds_count{camelContext="books-api-v1",failed="false",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelRoutePolicy_seconds_sum{camelContext="books-api-v1",failed="false",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService",} 0.004595063
     # HELP jvm_buffer_count_buffers An estimate of the number of buffers in the pool
-    jvm_buffer_count_buffers{id="mapped - 'non-volatile memory'"} 0.0
-    jvm_buffer_count_buffers{id="mapped"} 0.0
-    jvm_buffer_count_buffers{id="direct"} 21.0
-    # TYPE jvm_threads_started_threads counter
-    # HELP jvm_threads_started_threads The total number of application threads started in the JVM
-    jvm_threads_started_threads_total 41.0
-    # TYPE jvm_gc_pause_seconds summary
-    # HELP jvm_gc_pause_seconds Time spent in GC pause
-    jvm_gc_pause_seconds_count{action="end of minor GC",cause="Allocation Failure",gc="PS Scavenge"} 21.0
-    jvm_gc_pause_seconds_sum{action="end of minor GC",cause="Allocation Failure",gc="PS Scavenge"} 0.141
-    jvm_gc_pause_seconds_count{action="end of major GC",cause="Ergonomics",gc="PS MarkSweep"} 1.0
-    jvm_gc_pause_seconds_sum{action="end of major GC",cause="Ergonomics",gc="PS MarkSweep"} 0.124
-    # TYPE jvm_gc_pause_seconds_max gauge
-    # HELP jvm_gc_pause_seconds_max Time spent in GC pause
-    jvm_gc_pause_seconds_max{action="end of minor GC",cause="Allocation Failure",gc="PS Scavenge"} 0.003
-    jvm_gc_pause_seconds_max{action="end of major GC",cause="Ergonomics",gc="PS MarkSweep"} 0.0
-    # TYPE jvm_buffer_total_capacity_bytes gauge
+    # TYPE jvm_buffer_count_buffers gauge
+    jvm_buffer_count_buffers{id="mapped - 'non-volatile memory'",} 0.0
+    jvm_buffer_count_buffers{id="mapped",} 0.0
+    jvm_buffer_count_buffers{id="direct",} 10.0
     # HELP jvm_buffer_total_capacity_bytes An estimate of the total capacity of the buffers in this pool
-    jvm_buffer_total_capacity_bytes{id="mapped - 'non-volatile memory'"} 0.0
-    jvm_buffer_total_capacity_bytes{id="mapped"} 0.0
-    jvm_buffer_total_capacity_bytes{id="direct"} 950467.0
-    # TYPE jvm_gc_overhead_percent gauge
-    # HELP jvm_gc_overhead_percent An approximation of the percent of CPU time used by GC activities over the last lookback period or since monitoring began, whichever is shorter, in the range [0..1]
-    jvm_gc_overhead_percent 1.0E-5
-    # TYPE jvm_threads_peak_threads gauge
+    # TYPE jvm_buffer_total_capacity_bytes gauge
+    jvm_buffer_total_capacity_bytes{id="mapped - 'non-volatile memory'",} 0.0
+    jvm_buffer_total_capacity_bytes{id="mapped",} 0.0
+    jvm_buffer_total_capacity_bytes{id="direct",} 294943.0
     # HELP jvm_threads_peak_threads The peak live thread count since the Java virtual machine started or peak was reset
-    jvm_threads_peak_threads 27.0
-    # TYPE jvm_memory_usage_after_gc_percent gauge
-    # HELP jvm_memory_usage_after_gc_percent The percentage of long-lived heap pool used after the last GC event, in the range [0..1]
-    jvm_memory_usage_after_gc_percent{area="heap",pool="long-lived"} 0.12126725630326704
-    # TYPE jvm_memory_committed_bytes gauge
-    # HELP jvm_memory_committed_bytes The amount of memory in bytes that is committed for the Java virtual machine to use
-    jvm_memory_committed_bytes{area="nonheap",id="CodeHeap 'profiled nmethods'"} 1.1075584E7
-    jvm_memory_committed_bytes{area="heap",id="PS Old Gen"} 2.0447232E7
-    jvm_memory_committed_bytes{area="heap",id="PS Survivor Space"} 1048576.0
-    jvm_memory_committed_bytes{area="heap",id="PS Eden Space"} 2621440.0
-    jvm_memory_committed_bytes{area="nonheap",id="Metaspace"} 5.4001664E7
-    jvm_memory_committed_bytes{area="nonheap",id="CodeHeap 'non-nmethods'"} 2555904.0
-    jvm_memory_committed_bytes{area="nonheap",id="Compressed Class Space"} 7012352.0
-    jvm_memory_committed_bytes{area="nonheap",id="CodeHeap 'non-profiled nmethods'"} 2555904.0
-    # TYPE jvm_threads_live_threads gauge
-    # HELP jvm_threads_live_threads The current number of live threads including both daemon and non-daemon threads
-    jvm_threads_live_threads 24.0
-    # TYPE camel_routes_added_routes gauge
-    # HELP camel_routes_added_routes  
-    camel_routes_added_routes{camelContext="books-api-v1",eventType="RouteEvent",serviceName="MicrometerEventNotifierService"} 4.0
-    # TYPE system_cpu_usage gauge
-    # HELP system_cpu_usage The \"recent cpu usage\" of the system the application is running in
-    system_cpu_usage 0.09175393833876222
-    # TYPE camel_exchanges_failures_handled counter
-    # HELP camel_exchanges_failures_handled Number of failures handled
-    camel_exchanges_failures_handled_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_exchanges_failures_handled_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_exchanges_failures_handled_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_exchanges_failures_handled_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService"} 0.0
-    # TYPE http_server_connections_seconds_max gauge
+    # TYPE jvm_threads_peak_threads gauge
+    jvm_threads_peak_threads 19.0
+    # HELP process_uptime_seconds The uptime of the Java virtual machine
+    # TYPE process_uptime_seconds gauge
+    process_uptime_seconds 2278.567
+    # HELP jvm_gc_memory_allocated_bytes_total Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next
+    # TYPE jvm_gc_memory_allocated_bytes_total counter
+    jvm_gc_memory_allocated_bytes_total 5.7025264E7
     # HELP http_server_connections_seconds_max The duration of the connections
-    http_server_connections_seconds_max 0.009716051
-    # TYPE http_server_connections_seconds summary
+    # TYPE http_server_connections_seconds_max gauge
+    http_server_connections_seconds_max 0.007946172
     # HELP http_server_connections_seconds The duration of the connections
+    # TYPE http_server_connections_seconds summary
     http_server_connections_seconds_active_count 1.0
-    http_server_connections_seconds_duration_sum 0.009586215
-    # TYPE http_server_bytes_written_max gauge
+    http_server_connections_seconds_duration_sum 0.007815831
+    # HELP jvm_gc_pause_seconds Time spent in GC pause
+    # TYPE jvm_gc_pause_seconds summary
+    jvm_gc_pause_seconds_count{action="end of major GC",cause="Ergonomics",} 2.0
+    jvm_gc_pause_seconds_sum{action="end of major GC",cause="Ergonomics",} 0.177
+    jvm_gc_pause_seconds_count{action="end of minor GC",cause="Allocation Failure",} 30.0
+    jvm_gc_pause_seconds_sum{action="end of minor GC",cause="Allocation Failure",} 0.475
+    # HELP jvm_gc_pause_seconds_max Time spent in GC pause
+    # TYPE jvm_gc_pause_seconds_max gauge
+    jvm_gc_pause_seconds_max{action="end of major GC",cause="Ergonomics",} 0.097
+    jvm_gc_pause_seconds_max{action="end of minor GC",cause="Allocation Failure",} 0.084
+    # HELP CamelRoutesRunning_routes  
+    # TYPE CamelRoutesRunning_routes gauge
+    CamelRoutesRunning_routes{camelContext="books-api-v1",eventType="RouteEvent",serviceName="MicrometerEventNotifierService",} 4.0
+    # HELP worker_pool_usage_seconds Time spent using resources from the pool
+    # TYPE worker_pool_usage_seconds summary
+    worker_pool_usage_seconds_count{pool_name="vert.x-internal-blocking",pool_type="worker",} 0.0
+    worker_pool_usage_seconds_sum{pool_name="vert.x-internal-blocking",pool_type="worker",} 0.0
+    worker_pool_usage_seconds_count{pool_name="vert.x-worker-thread",pool_type="worker",} 155.0
+    worker_pool_usage_seconds_sum{pool_name="vert.x-worker-thread",pool_type="worker",} 1.076878973
+    # HELP worker_pool_usage_seconds_max Time spent using resources from the pool
+    # TYPE worker_pool_usage_seconds_max gauge
+    worker_pool_usage_seconds_max{pool_name="vert.x-internal-blocking",pool_type="worker",} 0.0
+    worker_pool_usage_seconds_max{pool_name="vert.x-worker-thread",pool_type="worker",} 0.627256839
+    # HELP jvm_buffer_memory_used_bytes An estimate of the memory that the Java virtual machine is using for this buffer pool
+    # TYPE jvm_buffer_memory_used_bytes gauge
+    jvm_buffer_memory_used_bytes{id="mapped - 'non-volatile memory'",} 0.0
+    jvm_buffer_memory_used_bytes{id="mapped",} 0.0
+    jvm_buffer_memory_used_bytes{id="direct",} 294944.0
+    # HELP CamelExchangesInflight  
+    # TYPE CamelExchangesInflight gauge
+    CamelExchangesInflight{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerEventNotifierService",} 0.0
+    CamelExchangesInflight{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerEventNotifierService",} 0.0
+    # HELP jvm_gc_memory_promoted_bytes_total Count of positive increases in the size of the old generation memory pool before GC to after GC
+    # TYPE jvm_gc_memory_promoted_bytes_total counter
+    jvm_gc_memory_promoted_bytes_total 3982088.0
+    # HELP worker_pool_queue_size Number of pending elements in the waiting queue
+    # TYPE worker_pool_queue_size gauge
+    worker_pool_queue_size{pool_name="vert.x-internal-blocking",pool_type="worker",} 0.0
+    worker_pool_queue_size{pool_name="vert.x-worker-thread",pool_type="worker",} 0.0
     # HELP http_server_bytes_written_max Number of bytes sent by the server
-    http_server_bytes_written_max 869.0
-    # TYPE http_server_bytes_written summary
+    # TYPE http_server_bytes_written_max gauge
+    http_server_bytes_written_max 4096.0
     # HELP http_server_bytes_written Number of bytes sent by the server
-    http_server_bytes_written_count 345.0
-    http_server_bytes_written_sum 163699.0
-    # TYPE http_server_bytes_read summary
+    # TYPE http_server_bytes_written summary
+    http_server_bytes_written_count 156.0
+    http_server_bytes_written_sum 48899.0
+    # HELP worker_pool_completed_total Number of times resources from the pool have been acquired
+    # TYPE worker_pool_completed_total counter
+    worker_pool_completed_total{pool_name="vert.x-internal-blocking",pool_type="worker",} 0.0
+    worker_pool_completed_total{pool_name="vert.x-worker-thread",pool_type="worker",} 155.0
+    # HELP jvm_threads_daemon_threads The current number of live daemon threads
+    # TYPE jvm_threads_daemon_threads gauge
+    jvm_threads_daemon_threads 13.0
+    # HELP CamelExchangesFailed_total  
+    # TYPE CamelExchangesFailed_total counter
+    CamelExchangesFailed_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService",} 0.0
+    CamelExchangesFailed_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService",} 0.0
+    CamelExchangesFailed_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService",} 0.0
+    CamelExchangesFailed_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService",} 0.0
+    # HELP worker_pool_queue_delay_seconds_max Time spent in the waiting queue before being processed
+    # TYPE worker_pool_queue_delay_seconds_max gauge
+    worker_pool_queue_delay_seconds_max{pool_name="vert.x-internal-blocking",pool_type="worker",} 0.0
+    worker_pool_queue_delay_seconds_max{pool_name="vert.x-worker-thread",pool_type="worker",} 8.3194E-5
+    # HELP worker_pool_queue_delay_seconds Time spent in the waiting queue before being processed
+    # TYPE worker_pool_queue_delay_seconds summary
+    worker_pool_queue_delay_seconds_count{pool_name="vert.x-internal-blocking",pool_type="worker",} 0.0
+    worker_pool_queue_delay_seconds_sum{pool_name="vert.x-internal-blocking",pool_type="worker",} 0.0
+    worker_pool_queue_delay_seconds_count{pool_name="vert.x-worker-thread",pool_type="worker",} 156.0
+    worker_pool_queue_delay_seconds_sum{pool_name="vert.x-worker-thread",pool_type="worker",} 0.143749189
+    # HELP jvm_classes_loaded_classes The number of classes that are currently loaded in the Java virtual machine
+    # TYPE jvm_classes_loaded_classes gauge
+    jvm_classes_loaded_classes 8989.0
+    # HELP CamelRoutesAdded_routes  
+    # TYPE CamelRoutesAdded_routes gauge
+    CamelRoutesAdded_routes{camelContext="books-api-v1",eventType="RouteEvent",serviceName="MicrometerEventNotifierService",} 4.0
+    # HELP jvm_info_total JVM version info
+    # TYPE jvm_info_total counter
+    jvm_info_total{runtime="OpenJDK Runtime Environment",vendor="Red Hat, Inc.",version="17.0.9+9-LTS",} 1.0
+    # HELP CamelExchangesSucceeded_total  
+    # TYPE CamelExchangesSucceeded_total counter
+    CamelExchangesSucceeded_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelExchangesSucceeded_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelExchangesSucceeded_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService",} 1.0
+    CamelExchangesSucceeded_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService",} 1.0
     # HELP http_server_bytes_read Number of bytes received by the server
+    # TYPE http_server_bytes_read summary
     http_server_bytes_read_count 0.0
     http_server_bytes_read_sum 0.0
-    # TYPE http_server_bytes_read_max gauge
     # HELP http_server_bytes_read_max Number of bytes received by the server
+    # TYPE http_server_bytes_read_max gauge
     http_server_bytes_read_max 0.0
-    # TYPE jvm_gc_memory_allocated_bytes counter
-    # HELP jvm_gc_memory_allocated_bytes Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next
-    jvm_gc_memory_allocated_bytes_total 5.4956112E7
-    # TYPE jvm_classes_unloaded_classes counter
-    # HELP jvm_classes_unloaded_classes The total number of classes unloaded since the Java virtual machine has started execution
-    jvm_classes_unloaded_classes_total 0.0
-    # TYPE jvm_gc_max_data_size_bytes gauge
-    # HELP jvm_gc_max_data_size_bytes Max size of long-lived heap memory pool
-    jvm_gc_max_data_size_bytes 1.441792E8
-    # TYPE worker_pool_completed counter
-    # HELP worker_pool_completed Number of times resources from the pool have been acquired
-    worker_pool_completed_total{pool_name="vert.x-internal-blocking",pool_type="worker"} 0.0
-    worker_pool_completed_total{pool_name="vert.x-worker-thread",pool_type="worker"} 341.0 # {span_id="13f8dc9fa0c4e5ff",trace_id="248a3fba31d24f0839b2b99d39ab79b5"} 1.0 1698517783.069
-    # TYPE jvm_info counter
-    # HELP jvm_info JVM version info
-    jvm_info_total{runtime="OpenJDK Runtime Environment",vendor="Red Hat, Inc.",version="17.0.9+9-LTS"} 1.0
-    # TYPE camel_exchanges_external_redeliveries counter
-    # HELP camel_exchanges_external_redeliveries Number of external initiated redeliveries (such as from JMS broker)
-    camel_exchanges_external_redeliveries_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_exchanges_external_redeliveries_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_exchanges_external_redeliveries_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_exchanges_external_redeliveries_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService"} 0.0
-    # TYPE camel_exchanges_inflight gauge
-    # HELP camel_exchanges_inflight Route inflight messages
-    camel_exchanges_inflight{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerEventNotifierService"} 0.0
-    camel_exchanges_inflight{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerEventNotifierService"} 0.0
-    # TYPE jvm_threads_states_threads gauge
-    # HELP jvm_threads_states_threads The current number of threads
-    jvm_threads_states_threads{state="runnable"} 11.0
-    jvm_threads_states_threads{state="blocked"} 0.0
-    jvm_threads_states_threads{state="waiting"} 6.0
-    jvm_threads_states_threads{state="timed-waiting"} 7.0
-    jvm_threads_states_threads{state="new"} 0.0
-    jvm_threads_states_threads{state="terminated"} 0.0
-    # TYPE camel_routes_running_routes gauge
-    # HELP camel_routes_running_routes  
-    camel_routes_running_routes{camelContext="books-api-v1",eventType="RouteEvent",serviceName="MicrometerEventNotifierService"} 4.0
-    # TYPE process_files_max_files gauge
+    # HELP worker_pool_active The number of resources from the pool currently used
+    # TYPE worker_pool_active gauge
+    worker_pool_active{pool_name="vert.x-internal-blocking",pool_type="worker",} 0.0
+    worker_pool_active{pool_name="vert.x-worker-thread",pool_type="worker",} 1.0
     # HELP process_files_max_files The maximum file descriptor count
+    # TYPE process_files_max_files gauge
     process_files_max_files 1048576.0
-    # TYPE camel_exchanges_succeeded counter
-    # HELP camel_exchanges_succeeded Number of successfully completed exchanges
-    camel_exchanges_succeeded_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService"} 4.0 # {span_id="5b6c845929891da6",trace_id="c23dec07ed0c872578cd146b7d8f864d"} 1.0 1698517666.232
-    camel_exchanges_succeeded_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService"} 2.0 # {span_id="718823ab465c7700",trace_id="248a3fba31d24f0839b2b99d39ab79b5"} 1.0 1698517783.068
-    camel_exchanges_succeeded_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService"} 2.0 # {span_id="13f8dc9fa0c4e5ff",trace_id="248a3fba31d24f0839b2b99d39ab79b5"} 1.0 1698517783.068
-    camel_exchanges_succeeded_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService"} 4.0 # {span_id="5bfdc681ee83c60c",trace_id="c23dec07ed0c872578cd146b7d8f864d"} 1.0 1698517666.232
-    # TYPE http_server_active_requests gauge
-    # HELP http_server_active_requests  
-    http_server_active_requests 1.0
-    # TYPE jvm_gc_memory_promoted_bytes counter
-    # HELP jvm_gc_memory_promoted_bytes Count of positive increases in the size of the old generation memory pool before GC to after GC
-    jvm_gc_memory_promoted_bytes_total 4059688.0
-    # TYPE worker_pool_ratio gauge
-    # HELP worker_pool_ratio Pool usage ratio
-    worker_pool_ratio{pool_name="vert.x-internal-blocking",pool_type="worker"} NaN
-    worker_pool_ratio{pool_name="vert.x-worker-thread",pool_type="worker"} 0.05
-    # TYPE worker_pool_usage_seconds summary
-    # HELP worker_pool_usage_seconds Time spent using resources from the pool
-    worker_pool_usage_seconds_count{pool_name="vert.x-internal-blocking",pool_type="worker"} 0.0
-    worker_pool_usage_seconds_sum{pool_name="vert.x-internal-blocking",pool_type="worker"} 0.0
-    worker_pool_usage_seconds_count{pool_name="vert.x-worker-thread",pool_type="worker"} 341.0
-    worker_pool_usage_seconds_sum{pool_name="vert.x-worker-thread",pool_type="worker"} 0.560966301
-    # TYPE worker_pool_usage_seconds_max gauge
-    # HELP worker_pool_usage_seconds_max Time spent using resources from the pool
-    worker_pool_usage_seconds_max{pool_name="vert.x-internal-blocking",pool_type="worker"} 0.0
-    worker_pool_usage_seconds_max{pool_name="vert.x-worker-thread",pool_type="worker"} 8.34297E-4
-    # TYPE process_files_open_files gauge
-    # HELP process_files_open_files The open file descriptor count
-    process_files_open_files 42.0
-    # TYPE jvm_gc_live_data_size_bytes gauge
+    # HELP system_load_average_1m The sum of the number of runnable entities queued to available processors and the number of runnable entities running on the available processors averaged over a period of time
+    # TYPE system_load_average_1m gauge
+    system_load_average_1m 2.75
     # HELP jvm_gc_live_data_size_bytes Size of long-lived heap memory pool after reclamation
-    jvm_gc_live_data_size_bytes 1.6341648E7
-    # TYPE camel_route_policy_seconds summary
-    # HELP camel_route_policy_seconds Route performance metrics
-    camel_route_policy_seconds_count{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService"} 4.0
-    camel_route_policy_seconds_sum{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService"} 0.100014126
-    camel_route_policy_seconds_count{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService"} 2.0
-    camel_route_policy_seconds_sum{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService"} 0.009995004
-    camel_route_policy_seconds_count{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService"} 2.0
-    camel_route_policy_seconds_sum{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService"} 0.096756579
-    camel_route_policy_seconds_count{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService"} 4.0
-    camel_route_policy_seconds_sum{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService"} 0.106631313
-    # TYPE camel_route_policy_seconds_max gauge
-    # HELP camel_route_policy_seconds_max Route performance metrics
-    camel_route_policy_seconds_max{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_route_policy_seconds_max{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_route_policy_seconds_max{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_route_policy_seconds_max{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService"} 0.0
-    # TYPE camel_exchange_event_notifier_seconds_max gauge
-    # HELP camel_exchange_event_notifier_seconds_max Time taken to send message to the endpoint
-    camel_exchange_event_notifier_seconds_max{camelContext="books-api-v1",endpointName="direct://getBooks-v1",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService"} 0.0
-    camel_exchange_event_notifier_seconds_max{camelContext="books-api-v1",endpointName="platform-http:///api/v1/books?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService"} 0.0
-    camel_exchange_event_notifier_seconds_max{camelContext="books-api-v1",endpointName="direct://getOAS",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService"} 0.0
-    camel_exchange_event_notifier_seconds_max{camelContext="books-api-v1",endpointName="platform-http:///api/v1/openapi.json?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService"} 0.0
-    # TYPE camel_exchange_event_notifier_seconds summary
-    # HELP camel_exchange_event_notifier_seconds Time taken to send message to the endpoint
-    camel_exchange_event_notifier_seconds_count{camelContext="books-api-v1",endpointName="direct://getBooks-v1",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService"} 4.0
-    camel_exchange_event_notifier_seconds_sum{camelContext="books-api-v1",endpointName="direct://getBooks-v1",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService"} 0.099
-    camel_exchange_event_notifier_seconds_count{camelContext="books-api-v1",endpointName="platform-http:///api/v1/books?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService"} 4.0
-    camel_exchange_event_notifier_seconds_sum{camelContext="books-api-v1",endpointName="platform-http:///api/v1/books?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService"} 0.113525322
-    camel_exchange_event_notifier_seconds_count{camelContext="books-api-v1",endpointName="direct://getOAS",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService"} 2.0
-    camel_exchange_event_notifier_seconds_sum{camelContext="books-api-v1",endpointName="direct://getOAS",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService"} 0.011
-    camel_exchange_event_notifier_seconds_count{camelContext="books-api-v1",endpointName="platform-http:///api/v1/openapi.json?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService"} 2.0
-    camel_exchange_event_notifier_seconds_sum{camelContext="books-api-v1",endpointName="platform-http:///api/v1/openapi.json?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService"} 0.187767684
-    # TYPE worker_pool_queue_delay_seconds_max gauge
-    # HELP worker_pool_queue_delay_seconds_max Time spent in the waiting queue before being processed
-    worker_pool_queue_delay_seconds_max{pool_name="vert.x-internal-blocking",pool_type="worker"} 0.0
-    worker_pool_queue_delay_seconds_max{pool_name="vert.x-worker-thread",pool_type="worker"} 6.3226E-5
-    # TYPE worker_pool_queue_delay_seconds summary
-    # HELP worker_pool_queue_delay_seconds Time spent in the waiting queue before being processed
-    worker_pool_queue_delay_seconds_count{pool_name="vert.x-internal-blocking",pool_type="worker"} 0.0
-    worker_pool_queue_delay_seconds_sum{pool_name="vert.x-internal-blocking",pool_type="worker"} 0.0
-    worker_pool_queue_delay_seconds_count{pool_name="vert.x-worker-thread",pool_type="worker"} 342.0
-    worker_pool_queue_delay_seconds_sum{pool_name="vert.x-worker-thread",pool_type="worker"} 0.044562246
-    # TYPE camel_exchanges_failed counter
-    # HELP camel_exchanges_failed Number of failed exchanges
-    camel_exchanges_failed_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_exchanges_failed_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_exchanges_failed_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService"} 0.0
-    camel_exchanges_failed_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService"} 0.0
-    # TYPE http_server_requests_seconds summary
-    # HELP http_server_requests_seconds  
-    http_server_requests_seconds_count{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/books"} 4.0
-    http_server_requests_seconds_sum{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/books"} 0.115271831
-    http_server_requests_seconds_count{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/openapi.json"} 2.0
-    http_server_requests_seconds_sum{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/openapi.json"} 0.196634934
-    http_server_requests_seconds_count{method="GET",outcome="CLIENT_ERROR",status="404",uri="NOT_FOUND"} 1.0
-    http_server_requests_seconds_sum{method="GET",outcome="CLIENT_ERROR",status="404",uri="NOT_FOUND"} 0.001069204
-    # TYPE http_server_requests_seconds_max gauge
-    # HELP http_server_requests_seconds_max  
-    http_server_requests_seconds_max{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/books"} 0.0
-    http_server_requests_seconds_max{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/openapi.json"} 0.0
-    http_server_requests_seconds_max{method="GET",outcome="CLIENT_ERROR",status="404",uri="NOT_FOUND"} 0.0
-    # TYPE jvm_memory_used_bytes gauge
-    # HELP jvm_memory_used_bytes The amount of used memory
-    jvm_memory_used_bytes{area="nonheap",id="CodeHeap 'profiled nmethods'"} 1.1045376E7
-    jvm_memory_used_bytes{area="heap",id="PS Old Gen"} 1.7484216E7
-    jvm_memory_used_bytes{area="heap",id="PS Survivor Space"} 854232.0
-    jvm_memory_used_bytes{area="heap",id="PS Eden Space"} 2157984.0
-    jvm_memory_used_bytes{area="nonheap",id="Metaspace"} 5.3627888E7
-    jvm_memory_used_bytes{area="nonheap",id="CodeHeap 'non-nmethods'"} 1406336.0
-    jvm_memory_used_bytes{area="nonheap",id="Compressed Class Space"} 6846808.0
-    jvm_memory_used_bytes{area="nonheap",id="CodeHeap 'non-profiled nmethods'"} 1917440.0
-    # TYPE jvm_threads_daemon_threads gauge
-    # HELP jvm_threads_daemon_threads The current number of live daemon threads
-    jvm_threads_daemon_threads 13.0
-    # TYPE process_start_time_seconds gauge
-    # HELP process_start_time_seconds Start time of the process since unix epoch.
-    process_start_time_seconds 1.698516397922E9
-    # TYPE jvm_classes_loaded_classes gauge
-    # HELP jvm_classes_loaded_classes The number of classes that are currently loaded in the Java virtual machine
-    jvm_classes_loaded_classes 10337.0
-    # TYPE system_cpu_count gauge
-    # HELP system_cpu_count The number of processors available to the Java virtual machine
-    system_cpu_count 1.0
+    # TYPE jvm_gc_live_data_size_bytes gauge
+    jvm_gc_live_data_size_bytes 1.0910728E7
+    # HELP jvm_memory_usage_after_gc_percent The percentage of long-lived heap pool used after the last GC event, in the range [0..1]
+    # TYPE jvm_memory_usage_after_gc_percent gauge
+    jvm_memory_usage_after_gc_percent{area="heap",pool="long-lived",} 0.07567477139559659
+    # HELP jvm_gc_max_data_size_bytes Max size of long-lived heap memory pool
+    # TYPE jvm_gc_max_data_size_bytes gauge
+    jvm_gc_max_data_size_bytes 1.441792E8
+    # HELP jvm_gc_overhead_percent An approximation of the percent of CPU time used by GC activities over the last lookback period or since monitoring began, whichever is shorter, in the range [0..1]
+    # TYPE jvm_gc_overhead_percent gauge
+    jvm_gc_overhead_percent 9.033333333333334E-4
+    # HELP CamelExchangeEventNotifier_seconds_max  
+    # TYPE CamelExchangeEventNotifier_seconds_max gauge
+    CamelExchangeEventNotifier_seconds_max{camelContext="books-api-v1",endpointName="direct://getBooks-v1",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService",} 0.111
+    CamelExchangeEventNotifier_seconds_max{camelContext="books-api-v1",endpointName="platform-http:///api/v1/books?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService",} 0.719008975
+    CamelExchangeEventNotifier_seconds_max{camelContext="books-api-v1",endpointName="direct://getOAS",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService",} 0.002
+    CamelExchangeEventNotifier_seconds_max{camelContext="books-api-v1",endpointName="platform-http:///api/v1/openapi.json?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService",} 0.006205928
+    # HELP CamelExchangeEventNotifier_seconds  
+    # TYPE CamelExchangeEventNotifier_seconds summary
+    CamelExchangeEventNotifier_seconds_count{camelContext="books-api-v1",endpointName="direct://getBooks-v1",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService",} 1.0
+    CamelExchangeEventNotifier_seconds_sum{camelContext="books-api-v1",endpointName="direct://getBooks-v1",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService",} 0.111
+    CamelExchangeEventNotifier_seconds_count{camelContext="books-api-v1",endpointName="platform-http:///api/v1/books?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService",} 1.0
+    CamelExchangeEventNotifier_seconds_sum{camelContext="books-api-v1",endpointName="platform-http:///api/v1/books?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService",} 0.719008975
+    CamelExchangeEventNotifier_seconds_count{camelContext="books-api-v1",endpointName="direct://getOAS",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService",} 1.0
+    CamelExchangeEventNotifier_seconds_sum{camelContext="books-api-v1",endpointName="direct://getOAS",eventType="ExchangeSentEvent",failed="false",serviceName="MicrometerEventNotifierService",} 0.002
+    CamelExchangeEventNotifier_seconds_count{camelContext="books-api-v1",endpointName="platform-http:///api/v1/openapi.json?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService",} 1.0
+    CamelExchangeEventNotifier_seconds_sum{camelContext="books-api-v1",endpointName="platform-http:///api/v1/openapi.json?httpMethodRestrict=GET%2COPTIONS",eventType="ExchangeCompletedEvent",failed="false",serviceName="MicrometerEventNotifierService",} 0.006205928
+    # HELP process_cpu_usage The "recent cpu usage" for the Java Virtual Machine process
     # TYPE process_cpu_usage gauge
-    # HELP process_cpu_usage The \"recent cpu usage\" for the Java Virtual Machine process
-    process_cpu_usage 0.09131378935939197
-    # TYPE jvm_buffer_memory_used_bytes gauge
-    # HELP jvm_buffer_memory_used_bytes An estimate of the memory that the Java virtual machine is using for this buffer pool
-    jvm_buffer_memory_used_bytes{id="mapped - 'non-volatile memory'"} 0.0
-    jvm_buffer_memory_used_bytes{id="mapped"} 0.0
-    jvm_buffer_memory_used_bytes{id="direct"} 958660.0
-    # EOF
+    process_cpu_usage 0.07133825079030559
+    # HELP jvm_threads_live_threads The current number of live threads including both daemon and non-daemon threads
+    # TYPE jvm_threads_live_threads gauge
+    jvm_threads_live_threads 18.0
+    # HELP system_cpu_usage The "recent cpu usage" of the system the application is running in
+    # TYPE system_cpu_usage gauge
+    system_cpu_usage 0.0719489764805058
+    # HELP http_server_requests_seconds  
+    # TYPE http_server_requests_seconds summary
+    http_server_requests_seconds_count{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/books",} 1.0
+    http_server_requests_seconds_sum{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/books",} 0.725820959
+    http_server_requests_seconds_count{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/openapi.json",} 1.0
+    http_server_requests_seconds_sum{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/openapi.json",} 0.006592283
+    # HELP http_server_requests_seconds_max  
+    # TYPE http_server_requests_seconds_max gauge
+    http_server_requests_seconds_max{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/books",} 0.725820959
+    http_server_requests_seconds_max{method="GET",outcome="SUCCESS",status="200",uri="/api/v1/openapi.json",} 0.006592283
+    # HELP process_files_open_files The open file descriptor count
+    # TYPE process_files_open_files gauge
+    process_files_open_files 34.0
+    # HELP CamelExchangesFailuresHandled_total  
+    # TYPE CamelExchangesFailuresHandled_total counter
+    CamelExchangesFailuresHandled_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService",} 0.0
+    CamelExchangesFailuresHandled_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService",} 0.0
+    CamelExchangesFailuresHandled_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService",} 0.0
+    CamelExchangesFailuresHandled_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService",} 0.0
+    # HELP process_start_time_seconds Start time of the process since unix epoch.
+    # TYPE process_start_time_seconds gauge
+    process_start_time_seconds 1.698539039163E9
+    # HELP CamelExchangesExternalRedeliveries_total  
+    # TYPE CamelExchangesExternalRedeliveries_total counter
+    CamelExchangesExternalRedeliveries_total{camelContext="books-api-v1",routeId="getBooks-v1",serviceName="MicrometerRoutePolicyService",} 0.0
+    CamelExchangesExternalRedeliveries_total{camelContext="books-api-v1",routeId="route1",serviceName="MicrometerRoutePolicyService",} 0.0
+    CamelExchangesExternalRedeliveries_total{camelContext="books-api-v1",routeId="get-oas-route",serviceName="MicrometerRoutePolicyService",} 0.0
+    CamelExchangesExternalRedeliveries_total{camelContext="books-api-v1",routeId="get-books-v1-route",serviceName="MicrometerRoutePolicyService",} 0.0
+    # HELP worker_pool_ratio Pool usage ratio
+    # TYPE worker_pool_ratio gauge
+    worker_pool_ratio{pool_name="vert.x-internal-blocking",pool_type="worker",} NaN
+    worker_pool_ratio{pool_name="vert.x-worker-thread",pool_type="worker",} 0.05
+    # HELP jvm_threads_states_threads The current number of threads
+    # TYPE jvm_threads_states_threads gauge
+    jvm_threads_states_threads{state="runnable",} 7.0
+    jvm_threads_states_threads{state="blocked",} 0.0
+    jvm_threads_states_threads{state="waiting",} 5.0
+    jvm_threads_states_threads{state="timed-waiting",} 6.0
+    jvm_threads_states_threads{state="new",} 0.0
+    jvm_threads_states_threads{state="terminated",} 0.0
+    # HELP jvm_memory_committed_bytes The amount of memory in bytes that is committed for the Java virtual machine to use
+    # TYPE jvm_memory_committed_bytes gauge
+    jvm_memory_committed_bytes{area="nonheap",id="CodeHeap 'profiled nmethods'",} 8585216.0
+    jvm_memory_committed_bytes{area="heap",id="PS Old Gen",} 1.4155776E7
+    jvm_memory_committed_bytes{area="heap",id="PS Survivor Space",} 1572864.0
+    jvm_memory_committed_bytes{area="heap",id="PS Eden Space",} 3145728.0
+    jvm_memory_committed_bytes{area="nonheap",id="Metaspace",} 4.5744128E7
+    jvm_memory_committed_bytes{area="nonheap",id="CodeHeap 'non-nmethods'",} 2555904.0
+    jvm_memory_committed_bytes{area="nonheap",id="Compressed Class Space",} 6094848.0
+    jvm_memory_committed_bytes{area="nonheap",id="CodeHeap 'non-profiled nmethods'",} 2555904.0
+    # HELP system_cpu_count The number of processors available to the Java virtual machine
+    # TYPE system_cpu_count gauge
+    system_cpu_count 1.0
     ```
 
 ## Related Guides
