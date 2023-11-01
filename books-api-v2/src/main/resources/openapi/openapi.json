@@ -26,11 +26,11 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/books-v2"
+                                        "$ref": "#/components/schemas/book-v2"
                                     }
                                 },
                                 "examples": {
-                                    "Books-v2": {
+                                    "ListOfBooks-v2": {
                                         "value": [
                                             {
                                                 "author": {
@@ -68,74 +68,138 @@
                     }
                 },
                 "operationId": "getBooks-v2",
-                "summary": "List All books-v2",
-                "description": "Gets a list of all `books-v2` entities."
+                "summary": "List all books (v2) from the inventory",
+                "description": "Gets a list of all `book-v2` entities from the inventory."
+            },
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/book-v2"
+                            },
+                            "examples": {
+                                "NewBook-v2": {
+                                    "value": {
+                                        "author": {
+                                            "birthDate": "1642-12-25T00:00:00.000Z",
+                                            "name": "Sir Isaac Newton"
+                                        },
+                                        "copies": 31,
+                                        "title": "Philosophiæ Naturalis Principia Mathematica",
+                                        "year": 1687
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "Books"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/book-v2"
+                                    }
+                                },
+                                "examples": {
+                                    "NewListOfBooks-v2": {
+                                        "value": [
+                                            {
+                                                "author": {
+                                                    "birthDate": "1797-08-30T00:00:00.000Z",
+                                                    "name": "Mary Shelley"
+                                                },
+                                                "copies": 10,
+                                                "title": "Frankenstein",
+                                                "year": 1818
+                                            },
+                                            {
+                                                "author": {
+                                                    "birthDate": "1812-02-07T00:00:00.000Z",
+                                                    "name": "Charles Dickens"
+                                                },
+                                                "copies": 5,
+                                                "title": "A Christmas Carol",
+                                                "year": 1843
+                                            },
+                                            {
+                                                "author": {
+                                                    "birthDate": "1775-12-16T00:00:00.000Z",
+                                                    "name": "Jane Austen"
+                                                },
+                                                "copies": 3,
+                                                "title": "Pride and Prejudice",
+                                                "year": 1813
+                                            },
+                                            {
+                                                "author": {
+                                                    "birthDate": "1642-12-25T00:00:00.000Z",
+                                                    "name": "Sir Isaac Newton"
+                                                },
+                                                "copies": 31,
+                                                "title": "Philosophiæ Naturalis Principia Mathematica",
+                                                "year": 1687
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Created"
+                    }
+                },
+                "operationId": "addNewBook-v2",
+                "description": "Adds a new `book-v2` entity in the inventory."
             }
         }
     },
     "components": {
         "schemas": {
-            "books-v2": {
-                "title": "Root Type for books-v2",
-                "description": "List of Books (v2)",
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "author": {
-                            "type": "object",
-                            "properties": {
-                                "birthDate": {
-                                    "format": "date-time",
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "type": "string"
-                                }
+            "book-v2": {
+                "title": "Root Type for book-v2",
+                "description": "A Book (v2) entity",
+                "type": "object",
+                "properties": {
+                    "author": {
+                        "type": "object",
+                        "properties": {
+                            "birthDate": {
+                                "format": "date-time",
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
                             }
-                        },
-                        "copies": {
-                            "format": "int32",
-                            "type": "integer"
-                        },
-                        "title": {
-                            "type": "string"
-                        },
-                        "year": {
-                            "format": "int32",
-                            "type": "integer"
                         }
+                    },
+                    "copies": {
+                        "format": "int32",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "format": "int32",
+                        "type": "integer"
                     }
                 },
-                "example": [
-                    {
-                        "author": {
-                            "birthDate": "1797-08-30T00:00:00.000Z",
-                            "name": "Mary Shelley"
-                        },
-                        "copies": 10,
-                        "title": "Frankenstein",
-                        "year": 1818
+                "example": {
+                    "author": {
+                        "birthDate": "1797-08-30T00:00:00.000Z",
+                        "name": "Mary Shelley"
                     },
-                    {
-                        "author": {
-                            "birthDate": "1812-02-07T00:00:00.000Z",
-                            "name": "Charles Dickens"
-                        },
-                        "copies": 5,
-                        "title": "A Christmas Carol",
-                        "year": 1843
-                    },
-                    {
-                        "author": {
-                            "birthDate": "1775-12-16T00:00:00.000Z",
-                            "name": "Jane Austen"
-                        },
-                        "copies": 3,
-                        "title": "Pride and Prejudice",
-                        "year": 1813
-                    }
-                ]
+                    "copies": 10,
+                    "title": "Frankenstein",
+                    "year": 1818
+                }
             }
         }
     },

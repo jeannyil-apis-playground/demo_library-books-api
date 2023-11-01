@@ -95,19 +95,42 @@ public class BooksApiRoute extends RouteBuilder {
             .get()
                 .id("get-books-v2-route")
                 .produces(MediaType.APPLICATION_JSON)
-                .description("Gets a list of all `Books-v1` entities.")
-                // Call the getFruits route
+                .description("Gets a list of all `book-v2` entities from the inventory.")
+                // Call the getBooks-v2 route
                 .to("direct:getBooks-v2")
+            .post()
+                .id("add-new-book-v2")
+                .consumes(MediaType.APPLICATION_JSON)
+                .produces(MediaType.APPLICATION_JSON)
+                .description("Adds a new `book-v2` entity in the inventory.")
+                // Call the addNewBook-v2 route
+                .to("direct:addNewBook-v2")
         ;
         
-        // Implements the getFruits operation
+        // Implements the getBooks-v2 operation
         from("direct:getBooks-v2")
             .routeId("getBooks-v2")
-            .log(LoggingLevel.INFO, logName, ">>> Processing GET books request...")
+            .log(LoggingLevel.INFO, logName, ">>> Processing getBooks-v2 request...")
             .setBody()
                 .constant(books)
             .marshal().json(JsonLibrary.Jackson, true)
-            .log(LoggingLevel.INFO, logName, ">>> Sending GET books response: ${body}")
+            .log(LoggingLevel.INFO, logName, ">>> Sending getBooks-v2 response: ${body}")
+        ;
+
+        // Implements the addNewBook-v2 operation
+        from("direct:addNewBook-v2")
+            .routeId("addNewBook-v2")
+            .log(LoggingLevel.INFO, logName, ">>> Processing addNewBook-v2 request: ${body}")
+            .unmarshal()
+                .json(JsonLibrary.Jackson, BookV2.class)
+            .process()
+                .body(BookV2.class, books::add)
+            .setBody()
+                .constant(books)
+            .marshal().json(JsonLibrary.Jackson, true)
+            .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.CREATED.getStatusCode()))
+			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.CREATED.getReasonPhrase()))
+            .log(LoggingLevel.INFO, logName, ">>> Sending addNewBook-v2  response: ${body}")
         ;
 
     }
