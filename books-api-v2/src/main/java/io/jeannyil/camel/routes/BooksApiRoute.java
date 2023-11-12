@@ -13,6 +13,7 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.jsonvalidator.JsonValidationException;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.model.rest.RestBindingMode;
 
@@ -60,7 +61,18 @@ public class BooksApiRoute extends RouteBuilder {
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()))
 			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.INTERNAL_SERVER_ERROR.getReasonPhrase()))
 			.setHeader(Exchange.CONTENT_TYPE, constant(MediaType.TEXT_PLAIN))
-			.setBody(simple("${exception}"))
+			.setBody(simple("${exception.message}"))
+            .log(LoggingLevel.INFO, logName, ">>> OUT: headers:[${headers}] - body:[${body}]")
+        ;
+
+        onException(JsonValidationException.class)
+            .handled(true)
+            .maximumRedeliveries(0)
+			.log(LoggingLevel.ERROR, logName, ">>> Caught exception after JSON Schema Validation: ${exception.stacktrace}")
+			.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.BAD_REQUEST.getStatusCode()))
+			.setProperty(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.BAD_REQUEST.getReasonPhrase()))
+            .setHeader(Exchange.CONTENT_TYPE, constant(MediaType.TEXT_PLAIN))
+            .setBody(simple("${exception.message}"))
             .log(LoggingLevel.INFO, logName, ">>> OUT: headers:[${headers}] - body:[${body}]")
         ;
         
@@ -120,7 +132,9 @@ public class BooksApiRoute extends RouteBuilder {
         // Implements the addNewBook-v2 operation
         from("direct:addNewBook-v2")
             .routeId("addNewBook-v2")
-            .log(LoggingLevel.INFO, logName, ">>> Processing addNewBook-v2 request: ${body}")
+            .log(LoggingLevel.INFO, logName, ">>> Received addNewBook-v2 request: ${body}")
+            .to("json-validator:json-schema/book-v2_schema.json")
+			.log(LoggingLevel.INFO, logName, ">>> Book-v2 JSON schema validation is successful. Processing addNewBook-v2 request...")
             .unmarshal()
                 .json(JsonLibrary.Jackson, BookV2.class)
             .process()
