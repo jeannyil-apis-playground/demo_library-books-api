@@ -59,7 +59,7 @@ public class BooksApiRoute extends RouteBuilder {
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()))
 			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.INTERNAL_SERVER_ERROR.getReasonPhrase()))
 			.setHeader(Exchange.CONTENT_TYPE, constant(MediaType.TEXT_PLAIN))
-			.setBody(simple("${exception}"))
+			.setBody(simple("${exception.message}"))
             .log(LoggingLevel.INFO, logName, ">>> OUT: headers:[${headers}] - body:[${body}]")
         ;
         

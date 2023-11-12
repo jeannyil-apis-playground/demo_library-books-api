@@ -86,7 +86,7 @@ quarkus:
     # large, eviction of previously selected resources could be triggered
     # with <code>excludePatterns</code>.
     resources:
-      includes: openapi/*,META-INF/resources/index.html
+      includes: json-schema/*,openapi/*,META-INF/resources/index.html
 
   ## Camel Quarkus
   camel:
@@ -112,6 +112,13 @@ quarkus:
       # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
       reflection:
         include-patterns: java.lang.Exception
+
+  # Register for indexing
+  # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
+  index-dependency:
+    jsonvalidator:
+      group-id: org.apache.camel.quarkus
+      artifact-id: camel-quarkus-json-validator
 
 # Only when running in prod profile
 "%prod":
