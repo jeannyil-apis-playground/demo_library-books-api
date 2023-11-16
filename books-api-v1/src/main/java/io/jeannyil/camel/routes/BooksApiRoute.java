@@ -29,6 +29,7 @@ import io.jeannyil.models.BookV1;
 public class BooksApiRoute extends RouteBuilder {
 
     private static String logName = BooksApiRoute.class.getName();
+    private static final String DEPLOYMENT_HTTP_LOCATION_HEADER = "deployment-location";
     private final Set<BookV1> books = Collections.synchronizedSet(new LinkedHashSet<>());
 
     @Inject
@@ -59,6 +60,7 @@ public class BooksApiRoute extends RouteBuilder {
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()))
 			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.INTERNAL_SERVER_ERROR.getReasonPhrase()))
 			.setHeader(Exchange.CONTENT_TYPE, constant(MediaType.TEXT_PLAIN))
+            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
 			.setBody(simple("${exception.message}"))
             .log(LoggingLevel.INFO, logName, ">>> OUT: headers:[${headers}] - body:[${body}]")
         ;
@@ -113,6 +115,9 @@ public class BooksApiRoute extends RouteBuilder {
             .setBody()
                 .constant(books)
             .marshal().json(JsonLibrary.Jackson, true)
+            .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.OK.getStatusCode()))
+			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.OK.getReasonPhrase()))
+            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
             .log(LoggingLevel.INFO, logName, ">>> Sending getBooks-v1 response: ${body}")
         ;
 
@@ -129,6 +134,7 @@ public class BooksApiRoute extends RouteBuilder {
             .marshal().json(JsonLibrary.Jackson, true)
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.CREATED.getStatusCode()))
 			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.CREATED.getReasonPhrase()))
+            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
             .log(LoggingLevel.INFO, logName, ">>> Sending addNewBook-v1  response: ${body}")
         ;
 

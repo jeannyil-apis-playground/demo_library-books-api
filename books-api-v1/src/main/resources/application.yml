@@ -5,6 +5,10 @@ camel:
   context:
     name: books-api-v1
 
+# Deployment location
+deployment:
+  location: OpenShift
+
 # Quarkus
 quarkus:
   # Display the banner
