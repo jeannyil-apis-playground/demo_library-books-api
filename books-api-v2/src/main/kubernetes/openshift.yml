@@ -4,4 +4,4 @@ kind: ConfigMap
 metadata:
   name: books-api-v2-config
 data:
-  quarkus.jaeger.endpoint: http://jaeger-es-collector.observability.svc:14268/api/traces
+  quarkus.otel.exporter.otlp.traces.endpoint: http://jaeger-all-in-one-inmemory-collector.ceq-services-jvm.svc:4317

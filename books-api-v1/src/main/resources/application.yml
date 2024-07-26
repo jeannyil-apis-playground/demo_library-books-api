@@ -42,7 +42,8 @@ quarkus:
     # Expose OpenShift route
     route:
       expose: true
-      host: books-api-v1.apps.cluster-8bcs7.8bcs7.sandbox2056.opentlc.com
+      tls:
+        termination: edge
     # CPU and Memory resources requirements when deployed on Kubernetes/OpenShift
     resources:
       requests:
@@ -56,24 +57,13 @@ quarkus:
 
   # OpenTelemetry configuration. This is leveraged by Camel Quarkus OpenTelemetry extension
   ## Identifier for the origin of spans created by the application
-  # application:
-  #   name: ${camel.context.name}
-  # opentelemetry:
-  #     tracer:
-  #         exporter:
-  #             otlp:
-  #                 endpoint: http://localhost:4317
-
-  # OpenTracing configuration. This is leveraged by Camel Quarkus OpenTracing extension
-  jaeger:
-    # The service name
-    service-name: ${camel.context.name}
-    # The sampler type (const, probabilistic, ratelimiting or remote)
-    sampler-type: const
-    # The sampler parameter
-    sampler-param: 1
-    # The traces endpoint to the Collector
-    endpoint: http://localhost:14268/api/traces
+  application:
+    name: ${camel.context.name}
+  otel:
+    exporter:
+      otlp:
+        traces:
+          endpoint: http://localhost:4317
 
   ## Quarkus native build 
   native:
@@ -103,7 +93,7 @@ quarkus:
     # Cf. https://camel.apache.org/camel-quarkus/latest/reference/extensions/micrometer.html
     metrics:
       enable-route-policy: true
-      enable-message-history: false
+      enable-message-history: true
       enable-exchange-event-notifier: true
       enable-route-event-notifier: true
       enable-camel-context-event-notifier: true
