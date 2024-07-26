@@ -1,9 +1,11 @@
 # books-api-v2
 
-This project leverages **Red Hat build of Quarkus 2.13.x**, the Supersonic Subatomic Java Framework. More specifically, the project is implemented using [**Red Hat Camel Extensions for Quarkus (RHCEQ) 2.13.x**](https://access.redhat.com/documentation/en-us/red_hat_integration/2023.q1/html/getting_started_with_camel_extensions_for_quarkus/index).
+This project leverages **Red Hat build of Quarkus 3.8.x**, the Supersonic Subatomic Java Framework. More specifically, the project is implemented using [**Red Hat build of Apache Camel 4.4.x for Quarkus**](https://access.redhat.com/documentation/en-us/red_hat_build_of_apache_camel).
 
-This project implements a simple REST API that returns a list of books. The following endpoints are exposed:
-- `/api/v2/books` : returns a list of all `Books-v2` entities.
+This project implements a simple REST API that manages books. The following endpoints are exposed:
+- `/api/v2/books` : 
+    - `GET` method returns a list of all `Books-v2` entities.
+    - `POST` method adds a new `book-v2` entity in the inventory.
 - `/api/v2/openapi.json`: returns the OpenAPI 3.0 specification for the service.
 - `/q/health` : returns the _Camel Quarkus MicroProfile_ health checks
 - `/q/metrics` : the _Camel Quarkus Micrometer_ metrics in prometheus format
@@ -68,12 +70,12 @@ If you want to learn more about building native executables, please consult http
 
 2. Create an OpenShift project to host the service
     ```script shell
-    oc new-project ceq-services-jvm --display-name="Red Hat Camel Extensions for Quarkus Apps - JVM Mode"
+    oc new-project ceq-services-jvm --display-name="Red Hat build of Apache Camel for Quarkus Apps - JVM Mode"
     ```
 
 3. Package and deploy the RHCEQ service to OpenShift
     ```script shell
-    ./mvnw clean package -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.group=ceq-services-jvm
+    ./mvnw clean package -Dquarkus.openshift.deploy=true -Dquarkus.container-image.group=ceq-services-jvm
     ```
 
 ### OpenTelemetry with Jaeger
