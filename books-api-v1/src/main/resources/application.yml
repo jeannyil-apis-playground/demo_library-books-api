@@ -54,6 +54,10 @@ quarkus:
         memory: 256Mi
     # The type of service that will be generated for the application
     service-type: ClusterIP
+    # Requirement of "hawtio-enabled" deployments. A container needsto have a port named "jolokia"
+    ports:
+      jolokia:
+        container-port: 8778
 
   # OpenTelemetry configuration. This is leveraged by Camel Quarkus OpenTelemetry extension
   ## Identifier for the origin of spans created by the application
