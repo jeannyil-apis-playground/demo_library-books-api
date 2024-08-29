@@ -13,7 +13,7 @@ This project implements a simple REST API that manages books. The following endp
 ## Prerequisites
 
 - Maven 3.8.1+
-- JDK 17 installed with `JAVA_HOME` configured appropriately
+- JDK 21 installed with `JAVA_HOME` configured appropriately
 - A running [_Red Hat OpenShift 4_](https://access.redhat.com/documentation/en-us/openshift_container_platform) cluster
 
 ## Running the application in dev mode
