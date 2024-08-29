@@ -108,6 +108,7 @@
       <groupId>org.apache.camel.quarkus</groupId>
       <artifactId>camel-quarkus-jaxb</artifactId>
     </dependency>
+    <!-- jolokia-agent for "hawtio-enabled" discovery by Hawtio Online -->
     <dependency>
       <groupId>org.jolokia</groupId>
       <artifactId>jolokia-agent-jvm</artifactId>
