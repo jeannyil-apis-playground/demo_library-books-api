@@ -48,10 +48,10 @@ quarkus:
     resources:
       requests:
         cpu: 30m
-        memory: 256Mi
+        memory: 512Mi
       limits:
         cpu: 500m
-        memory: 256Mi
+        memory: 512Mi
     # The type of service that will be generated for the application
     service-type: ClusterIP
     # Requirement of "hawtio-enabled" deployments. A container needsto have a port named "jolokia"
