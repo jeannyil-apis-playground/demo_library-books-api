@@ -19,7 +19,7 @@ This project implements a simple REST API that manages books. The following endp
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
-```shell script
+```shell
 ./mvnw compile quarkus:dev
 ```
 
@@ -28,7 +28,7 @@ You can run your application in dev mode that enables live coding using:
 ## Packaging and running the application
 
 The application can be packaged using:
-```shell script
+```shell
 ./mvnw package
 ```
 It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
@@ -37,7 +37,7 @@ Be aware that it’s not an _über-jar_ as the dependencies are copied into the 
 The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
 
 If you want to build an _über-jar_, execute the following command:
-```shell script
+```shell
 ./mvnw package -Dquarkus.package.type=uber-jar
 ```
 
@@ -46,12 +46,12 @@ The application, packaged as an _über-jar_, is now runnable using `java -jar ta
 ## Creating a native executable
 
 You can create a native executable using: 
-```shell script
+```shell
 ./mvnw package -Pnative
 ```
 
 Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
+```shell
 ./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```
 
@@ -64,17 +64,17 @@ If you want to learn more about building native executables, please consult http
 ### Instructions
 
 1. Login to the OpenShift cluster
-    ```script shell
+    ```shell
     oc login ...
     ```
 
 2. Create an OpenShift project to host the service
-    ```script shell
+    ```shell
     oc new-project ceq-services-jvm --display-name="Red Hat build of Apache Camel for Quarkus Apps - JVM Mode"
     ```
 
 3. Package and deploy the RHCEQ service to OpenShift
-    ```script shell
+    ```shell
     ./mvnw clean package -Dquarkus.openshift.deploy=true -Dquarkus.container-image.group=ceq-services-jvm
     ```
 
@@ -87,7 +87,7 @@ If you want to learn more about building native executables, please consult http
 :bulb: A simple way of starting a Jaeger tracing server is with `docker` or `podman`:
 
 1. Start the Jaeger tracing server:
-    ```
+    ```shell
     podman run --rm -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 -e COLLECTOR_OTLP_ENABLED=true \
     -p 6831:6831/udp -p 6832:6832/udp \
     -p 5778:5778 -p 16686:16686 -p 4317:4317 -p 4318:4318 -p 14250:14250  -p 14268:14268 -p 14269:14269 -p 9411:9411 \
@@ -99,7 +99,7 @@ If you want to learn more about building native executables, please consult http
 
 1. If not already installed, install the Red Hat OpenShift distributed tracing platform (Jaeger) operator with an AllNamespaces scope.
 _**:warning: cluster-admin privileges are required**_
-    ```
+    ```shell
     oc apply -f - <<EOF
     apiVersion: operators.coreos.com/v1alpha1
     kind: Subscription
@@ -116,12 +116,12 @@ _**:warning: cluster-admin privileges are required**_
     ```
 
 2. Verify the successful installation of the Red Hat OpenShift distributed tracing platform operator
-    ```script shell
+    ```shell
     watch oc get sub,csv
     ```
 
 3. Create the allInOne Jaeger instance in the dsna-pilot OpenShift project
-    ```script shell
+    ```shell
     oc apply -f - <<EOF
     apiVersion: jaegertracing.io/v1
     kind: Jaeger
@@ -145,17 +145,17 @@ _**:warning: cluster-admin privileges are required**_
 ### Testing instructions:
 
 1. Get the OpenShift route hostname
-    ```shell script
+    ```shell
     URL="http://$(oc get route books-api-v2 -o jsonpath='{.spec.host}')"
     ```
     
 2. Test the `/api/v2/books` endpoint
 
     - `GET` method:
-        ```shell script
+        ```shell
         http $URL/api/v2/books
         ```
-        ```console
+        ```shell
         [...]
         HTTP/1.1 200 OK
         [...]
@@ -193,7 +193,7 @@ _**:warning: cluster-admin privileges are required**_
         ```
     
     - `POST` method:
-        ```shell script
+        ```shell
         echo '{
             "author": {
                 "birthDate": "1642-12-25T00:00:00.000Z",
@@ -251,7 +251,7 @@ _**:warning: cluster-admin privileges are required**_
         ```
 
 3. Test the `/api/v2/openapi.json` endpoint
-    ```shell script
+    ```shell
     http $URL/api/v2/openapi.json
     ```
     ```console
@@ -473,7 +473,7 @@ _**:warning: cluster-admin privileges are required**_
     ```
 
 4. Test the `/q/health` endpoint
-    ```shell script
+    ```shell
     http $URL/q/health
     ```
     ```console
@@ -509,7 +509,7 @@ _**:warning: cluster-admin privileges are required**_
     ```
 
 5. Test the `/q/metrics` endpoint
-    ```shell script
+    ```shell
     http $URL/q/metrics
     ```
     ```console

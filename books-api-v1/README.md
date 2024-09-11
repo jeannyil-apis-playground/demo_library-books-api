@@ -19,7 +19,7 @@ This project implements a simple REST API that manages books. The following endp
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
-```shell script
+```shell
 ./mvnw compile quarkus:dev
 ```
 
@@ -28,7 +28,7 @@ You can run your application in dev mode that enables live coding using:
 ## Packaging and running the application
 
 The application can be packaged using:
-```shell script
+```shell
 ./mvnw package
 ```
 It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
@@ -37,7 +37,7 @@ Be aware that it’s not an _über-jar_ as the dependencies are copied into the 
 The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
 
 If you want to build an _über-jar_, execute the following command:
-```shell script
+```shell
 ./mvnw package -Dquarkus.package.type=uber-jar
 ```
 
@@ -46,12 +46,12 @@ The application, packaged as an _über-jar_, is now runnable using `java -jar ta
 ## Creating a native executable
 
 You can create a native executable using: 
-```shell script
+```shell
 ./mvnw package -Pnative
 ```
 
 Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
+```shell
 ./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```
 
@@ -64,17 +64,17 @@ If you want to learn more about building native executables, please consult http
 ### Instructions
 
 1. Login to the OpenShift cluster
-    ```script shell
+    ```shell
     oc login ...
     ```
 
 2. Create an OpenShift project to host the service
-    ```script shell
+    ```shell
     oc new-project ceq-services-jvm --display-name="Red Hat build of Apache Camel for Quarkus Apps - JVM Mode"
     ```
 
 3. Package and deploy the RHCEQ service to OpenShift
-    ```script shell
+    ```shell
     ./mvnw clean package -Dquarkus.openshift.deploy=true -Dquarkus.container-image.group=ceq-services-jvm
     ```
 
@@ -116,12 +116,12 @@ _**:warning: cluster-admin privileges are required**_
     ```
 
 2. Verify the successful installation of the Red Hat OpenShift distributed tracing platform operator
-    ```script shell
+    ```shell
     watch oc get sub,csv
     ```
 
 3. Create the allInOne Jaeger instance in the dsna-pilot OpenShift project
-    ```script shell
+    ```shell
     oc apply -f - <<EOF
     apiVersion: jaegertracing.io/v1
     kind: Jaeger
@@ -145,14 +145,14 @@ _**:warning: cluster-admin privileges are required**_
 ### Testing instructions:
 
 1. Get the OpenShift route hostname
-    ```shell script
+    ```shell
     URL="http://$(oc get route books-api-v1 -o jsonpath='{.spec.host}')"
     ```
     
 2. Test the `/api/v1/books` endpoint
 
     - `GET` method:
-        ```shell script
+        ```shell
         http $URL/api/v1/books
         ```
         ```console
@@ -184,7 +184,7 @@ _**:warning: cluster-admin privileges are required**_
         ```
 
     - `POST` method:
-        ```shell script
+        ```shell
         echo '{                                   
             "authorName": "Sir Isaac Newton",
             "copies": 31,
@@ -227,7 +227,7 @@ _**:warning: cluster-admin privileges are required**_
         ```
 
 3. Test the `/api/v1/openapi.json` endpoint
-    ```shell script
+    ```shell
     http $URL/api/v1/openapi.json
     ```
     ```console
@@ -414,7 +414,7 @@ _**:warning: cluster-admin privileges are required**_
     ```
 
 4. Test the `/q/health` endpoint
-    ```shell script
+    ```shell
     http $URL/q/health
     ```
     ```console
@@ -450,7 +450,7 @@ _**:warning: cluster-admin privileges are required**_
     ```
 
 5. Test the `/q/metrics` endpoint
-    ```shell script
+    ```shell
     http $URL/q/metrics
     ```
     ```console
