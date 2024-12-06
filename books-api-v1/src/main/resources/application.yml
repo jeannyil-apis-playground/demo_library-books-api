@@ -104,7 +104,7 @@ quarkus:
       enable-exchange-event-notifier: true
       enable-route-event-notifier: true
       enable-camel-context-event-notifier: true
-      enable-instrumented-thread-pool-factory: false
+      enable-instrumented-thread-pool-factory: true
 
     # native mode configuration
     native:
