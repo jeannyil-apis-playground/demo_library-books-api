@@ -26,11 +26,10 @@ This project implements a simple REST API that manages books. The following endp
         ```
     2. While the server is running, browse to http://localhost:16686 to view tracing events.
 
-
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
-```
+```shell
 ./mvnw clean compile quarkus:dev
 ```
 
