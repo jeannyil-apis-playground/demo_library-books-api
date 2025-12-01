@@ -1,0 +1,125 @@
+openapi: 3.0.2
+info:
+    title: Library Books API (v1)
+    version: 1.0.0
+    description: Manages a library books inventory
+servers:
+    -
+        url: 'http://localhost:8080/api/v1'
+        description: Server URL
+paths:
+    /books:
+        summary: Path used to manage the list of books-v1.
+        description: >-
+            The REST endpoint/path used to list and create zero or more `books-v1` entities.  This path
+            contains a `GET` operation to perform the list tasks.
+        get:
+            tags:
+                - Books
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/book-v1'
+                            examples:
+                                ListOfBooks-v1:
+                                    value:
+                                        -
+                                            authorName: Mary Shelley
+                                            copies: 10
+                                            title: Frankenstein
+                                            year: 1818
+                                        -
+                                            authorName: Charles Dickens
+                                            copies: 5
+                                            title: A Christmas Carol
+                                            year: 1843
+                                        -
+                                            authorName: Jane Austen
+                                            copies: 3
+                                            title: Pride and Prejudice
+                                            year: 1813
+                    description: Successful response - returns an array of `books-v1` entities.
+            operationId: getBooks-v1
+            summary: List all books (v1) from the inventory
+            description: Gets a list of all `book-v1` entities from the inventory.
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/book-v1'
+                        examples:
+                            NewBook-v1:
+                                value:
+                                    authorName: Sir Isaac Newton
+                                    copies: 31
+                                    title: Philosophiæ Naturalis Principia Mathematica
+                                    year: 1687
+                required: true
+            tags:
+                - Books
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/book-v1'
+                            examples:
+                                NewListOfBooks-v1:
+                                    value:
+                                        -
+                                            authorName: Mary Shelley
+                                            copies: 10
+                                            title: Frankenstein
+                                            year: 1818
+                                        -
+                                            authorName: Charles Dickens
+                                            copies: 5
+                                            title: A Christmas Carol
+                                            year: 1843
+                                        -
+                                            authorName: Jane Austen
+                                            copies: 3
+                                            title: Pride and Prejudice
+                                            year: 1813
+                                        -
+                                            authorName: Isaac Newton
+                                            copies: 31
+                                            title: Philosophiæ Naturalis Principia Mathematica
+                                            year: 1687
+                    description: Created
+            operationId: addNewBook-v1
+            summary: Adds a new book (v1) in the inventory
+            description: Adds a new `book-v1` entity in the inventory.
+components:
+    schemas:
+        book-v1:
+            title: Root Type for book-v1
+            description: A Book (v1) entity
+            type: object
+            properties:
+                authorName:
+                    type: string
+                copies:
+                    format: int32
+                    type: integer
+                title:
+                    type: string
+                year:
+                    format: int32
+                    type: integer
+            example:
+                authorName: Mary Shelley
+                copies: 10
+                title: Frankenstein
+                year: 1818
+tags:
+    -
+        name: Books
+        description: ''

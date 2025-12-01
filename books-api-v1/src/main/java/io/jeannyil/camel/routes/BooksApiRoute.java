@@ -14,8 +14,6 @@ import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
-import org.apache.camel.model.rest.RestBindingMode;
-
 import io.jeannyil.models.BookV1;
 
 /* BooksApi route definition
@@ -65,48 +63,11 @@ public class BooksApiRoute extends RouteBuilder {
             .log(LoggingLevel.INFO, logName, ">>> OUT: headers:[${headers}] - body:[${body}]")
         ;
         
-        //REST configuration with Camel Quarkus Platform HTTP component
-        restConfiguration()
-            .component("platform-http")
-            .enableCORS(true)
-            .bindingMode(RestBindingMode.off) // RESTful responses will be explicitly marshaled for logging purposes
-            .dataFormatProperty("prettyPrint", "true")
-            .contextPath("/api/v1")
-        ;
-
-        // REST endpoint for the FruitsAndLegumesApi OpenAPI specification
-        rest()
-            .produces(MediaType.APPLICATION_JSON)
-            .get("/openapi.json")
-                .id("get-oas-route")
-                .description("Gets the OpenAPI specification for this service in JSON format")
-                .to("direct:getOAS")
-        ;
-
-        // Returns the OAS
-        from("direct:getOAS")
-            .log(LoggingLevel.INFO, logName, ">>> IN: headers:[${headers}] - body:[${body}]")
-            .setHeader(Exchange.CONTENT_TYPE, constant("application/vnd.oai.openapi+json"))
-            .setBody().constant("resource:classpath:openapi/openapi.json")
-            .log(LoggingLevel.INFO, logName, ">>> OUT: headers:[${headers}] - body:[${body}]")
-        ;
-
-        // REST endpoint for the Books API
-        rest("/books")
-            .get()
-                .id("get-books-v1-route")
-                .produces(MediaType.APPLICATION_JSON)
-                .description("Gets a list of all `book-v1` entities from the inventory.")
-                // Call the getBooks-v1 route
-                .to("direct:getBooks-v1")
-            .post()
-                .id("add-new-book-v1")
-                .consumes(MediaType.APPLICATION_JSON)
-                .produces(MediaType.APPLICATION_JSON)
-                .description("Adds a new `book-v1` entity in the inventory.")
-                // Call the addNewBook-v1 route
-                .to("direct:addNewBook-v1")
-        ;
+        /**
+		 * REST DSL with OpenAPI contract first approach 
+         * Reference: https://docs.redhat.com/en/documentation/red_hat_build_of_apache_camel/4.14/html/developing_applications_with_red_hat_build_of_apache_camel_for_quarkus/rest-dsl-in-camel-quarkus#camel-quarkus-extensions-rest-dsl-contract-first
+		 */
+		rest().openApi("classpath:META-INF/openapi.yaml");
         
         // Implements the getBooks-v1 operation
         from("direct:getBooks-v1")
