@@ -1,0 +1,368 @@
+{
+	"info": {
+		"_postman_id": "33ab1ef0-9272-4590-9917-bbc2f83af85d",
+		"name": "Library Books API v2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2627305"
+	},
+	"item": [
+		{
+			"name": "getBooks-v2",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "clientSecret",
+							"value": "125db3c2deabd3f79047840a0dbf69cc",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "fe70a16c",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "fe70a16c",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "https://sso.apps.ocp4.jnyilimb.eu/realms/poc/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "https://sso.apps.ocp4.jnyilimb.eu/realms/poc/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "svcaccount1",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "P!ssw0rd",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "challengeAlgorithm",
+							"value": "S256",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://oauth.pstmn.io/v1/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{service_base_url}}/api/v2/books",
+					"host": [
+						"{{service_base_url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addNewBook-v2",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "clientSecret",
+							"value": "29e841d0844e0fa3d967dfb2766742d2",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "https://sso.apps.ocp4.jnyilimb.eu/realms/poc/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "fca0455d",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "fca0455d",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "svcaccount1",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "P!ssw0rd",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "https://sso.apps.cluster-8bcs7.8bcs7.sandbox2056.opentlc.com/auth/realms/igfej-demo/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "challengeAlgorithm",
+							"value": "S256",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://oauth.pstmn.io/v1/callback",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"author\": {\n    \"birthDate\": \"2014-12-14T00:00:00.000Z\",\n    \"name\": \"Karamela & Chkilita\"\n  },\n  \"copies\": 1000000,\n  \"title\": \"Journey of our love ❤\",\n  \"year\": 2024\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{service_base_url}}/api/v2/books",
+					"host": [
+						"{{service_base_url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get OpenAPI Specification - JSON",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{management_base_url}}/q/openapi?format=json",
+					"host": [
+						"{{management_base_url}}"
+					],
+					"path": [
+						"q",
+						"openapi"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get OpenAPI Specification - YAML",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{management_base_url}}/q/openapi",
+					"host": [
+						"{{management_base_url}}"
+					],
+					"path": [
+						"q",
+						"openapi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Microprofile Camel Health Checks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{management_base_url}}/observe/health",
+					"host": [
+						"{{management_base_url}}"
+					],
+					"path": [
+						"observe",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Microprofile Camel Health Liveness Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{management_base_url}}/observe/health/live",
+					"host": [
+						"{{management_base_url}}"
+					],
+					"path": [
+						"observe",
+						"health",
+						"live"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Microprofile Camel Health Startup Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{management_base_url}}/observe/health/started",
+					"host": [
+						"{{management_base_url}}"
+					],
+					"path": [
+						"observe",
+						"health",
+						"started"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Microprofile Camel Health Wellness Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{management_base_url}}/observe/health/well",
+					"host": [
+						"{{management_base_url}}"
+					],
+					"path": [
+						"observe",
+						"health",
+						"well"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "management_base_url",
+			"value": ""
+		},
+		{
+			"key": "service_base_url",
+			"value": ""
+		}
+	]
+}
