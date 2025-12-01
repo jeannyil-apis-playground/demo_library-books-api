@@ -1,35 +1,47 @@
 # Configuration file
 
-# Camel
-camel:
-  context:
-    name: books-api-v2
-
 # Deployment location
 deployment:
   location: OpenShift
 
+# Camel
+camel:
+  context:
+    name: books-api-v2
+# MicroProfile OpenAPI configuration
+# Reference: https://quarkus.io/guides/openapi-swaggerui
+## Serve only static OpenAPI document
+mp:
+  openapi:
+    scan:
+      disable: true
+
 # Quarkus
 quarkus:
-  # Display the banner
-  banner:
-    enabled: true
-  # Eventually, the client should trust a self signed certificate presented by the API server
-  kubernetes-client:
-    trust-certs: true
+  # CORS configuration
+  http:
+    cors:
+      enabled: true
+      origins: "*" # Allows all origins for demo purposes
+  # Swagger UI configuration
+  # Reference: https://quarkus.io/guides/openapi-swaggerui
+  ## Always include the Swagger UI in the generated OpenAPI specification
+  swagger-ui:
+    always-include: true
+
   # Enable native SSL support
   ssl:
     native: true
 
-  # THe container registry to use
-  container-image:
-    registry: image-registry.openshift-image-registry.svc:5000
-
   ## Quarkus OpenShift extension configuration
+  # Eventually, the client should trust a self signed certificate presented by the API server
+  kubernetes-client:
+    trust-certs: true
+
   openshift:
     # The kind of the deployment resource to use. Supported values are 'Deployment', 'StatefulSet', 'Job', 'CronJob' and 'DeploymentConfig' defaulting to the latter.
     deployment-kind: Deployment
-    # Part of the `RHAF-CEQ-Demo` Application Group
+    # Part of the `library-books-api` Application Group
     part-of: library-books-api
     # Apache Camel icon
     labels:
@@ -47,6 +59,8 @@ quarkus:
       expose: true
       tls:
         termination: edge
+    # The type of service that will be generated for the application
+    service-type: ClusterIP
     # CPU and Memory resources requirements when deployed on Kubernetes/OpenShift
     resources:
       requests:
@@ -55,26 +69,47 @@ quarkus:
       limits:
         cpu: 500m
         memory: 512Mi
-    # The type of service that will be generated for the application
-    service-type: ClusterIP
-    # Requirement of "hawtio-enabled" deployments. A container needs to have a port named "jolokia"
-    ports:
-      jolokia:
-        container-port: ${jolokia.port}
-    # Enable the jolokia java-agent on the quarkus application
-    env:
-      vars:
-        JAVA_OPTS_APPEND: -javaagent:lib/main/org.jolokia.jolokia-agent-jvm-${jolokia.version}-javaagent.jar=protocol=${jolokia.protocol},host=${jolokia.host},port=${jolokia.port},useSslClientAuthentication=${jolokia.useSslClientAuthentication},caCert=${jolokia.caCert},clientPrincipal.1=${jolokia.clientPrincipal.1},extendedClientCheck=${jolokia.extendedClientCheck},discoveryEnabled=${jolokia.discoveryEnabled}
+    # Generation of ServiceMonitor resource
+    ## By default, a ServiceMonitor resource is generated.
+    ## Disabled means no ServiceMonitor resource is generated   
+    prometheus:
+      generate-service-monitor: false
 
   # OpenTelemetry configuration. This is leveraged by Camel Quarkus OpenTelemetry extension
   ## Identifier for the origin of spans created by the application
   application:
     name: ${camel.context.name}
   otel:
-    exporter:
-      otlp:
-        traces:
-          endpoint: http://localhost:4317
+    sdk:
+      disabled: false
+    logs:
+      enabled: true
+
+  log:
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+
+  # Management endpoints on a separate interface
+  ## By default, management endpoints are exposed on the management port (9876)
+  ## Disabled means expose those endpoints in the regular service port (default, 8080)
+  management:
+    enabled: true
+
+  ## Camel Quarkus
+  camel:
+    jolokia:
+      kubernetes:
+        client-principal: cn=hawtio-online.hawtio.svc
+    metrics:
+      enable-message-history: true
+
+    # native mode configuration
+    native:
+    # A comma separated list of Ant-path style patterns to match class names
+    # that should be registered for reflection.
+    # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
+    reflection:
+      include-patterns: java.lang.Exception,org.apache.camel.component.jsonvalidator.JsonValidationException
 
   ## Quarkus native build 
   native:
@@ -91,33 +126,8 @@ quarkus:
     # large, eviction of previously selected resources could be triggered
     # with <code>excludePatterns</code>.
     resources:
-      includes: json-schema/*,openapi/*,META-INF/resources/index.html
-
-  ## Camel Quarkus
-  camel:
-    # Microprofile Camel Health checks
-    # Cf. https://camel.apache.org/camel-quarkus/latest/extensions/microprofile-health.html
-    health:
-      enabled: true
-
-    # Micrometer Camel Metrics
-    # Cf. https://camel.apache.org/camel-quarkus/latest/reference/extensions/micrometer.html
-    metrics:
-      enable-route-policy: true
-      enable-message-history: true
-      enable-exchange-event-notifier: true
-      enable-route-event-notifier: true
-      enable-camel-context-event-notifier: true
-      enable-instrumented-thread-pool-factory: true
-
-    # native mode configuration
-    native:
-      # A comma separated list of Ant-path style patterns to match class names
-      # that should be registered for reflection.
-      # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
-      reflection:
-        include-patterns: java.lang.Exception
-
+      includes: json-schema/*,META-INF/*
+  
   # Register for indexing
   # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
   index-dependency:

@@ -1,39 +1,39 @@
 {
-	"title": "Root Type for book-v2",
-	"description": "A Book (v2) entity",
-	"type": "object",
-	"properties": {
-		"author": {
-			"type": "object",
-			"properties": {
-				"birthDate": {
-					"format": "date-time",
-					"type": "string"
-				},
-				"name": {
-					"type": "string"
-				}
-			}
-		},
-		"copies": {
-			"format": "int32",
-			"type": "integer"
-		},
-		"title": {
-			"type": "string"
-		},
-		"year": {
-			"format": "int32",
-			"type": "integer"
-		}
-	},
-	"example": {
-		"author": {
-			"birthDate": "1797-08-30T00:00:00.000Z",
-			"name": "Mary Shelley"
-		},
-		"copies": 10,
-		"title": "Frankenstein",
-		"year": 1818
-	}
+    "title": "Root Type for book-v2",
+    "description": "A Book (v2) entity",
+    "type": "object",
+    "properties": {
+        "author": {
+            "type": "object",
+            "properties": {
+                "birthDate": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": ["birthDate","name"],
+            "additionalProperties": false
+        },
+        "copies": {
+            "format": "int32",
+            "type": "integer"
+        },
+        "title": {
+            "type": "string"
+        },
+        "year": {
+            "format": "int32",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "author",
+        "copies",
+        "title",
+        "year"
+    ],
+    "additionalProperties": false
 }
