@@ -145,7 +145,7 @@ java -Dquarkus.kubernetes-config.enabled=false -Dquarkus.otel.exporter.otlp.endp
         ```shell
         http $URL/api/v1/books
         ```
-        ```console
+        ```shell
         [...]
         HTTP/1.1 200 OK
         [...]
@@ -180,7 +180,7 @@ java -Dquarkus.kubernetes-config.enabled=false -Dquarkus.otel.exporter.otlp.endp
             "year": 1687
         }' | http POST $URL/api/v1/books 'Content-Type: application/json'
         ```
-        ```console
+        ```shell
         [...]
         HTTP/1.1 201 Created
         [...]
