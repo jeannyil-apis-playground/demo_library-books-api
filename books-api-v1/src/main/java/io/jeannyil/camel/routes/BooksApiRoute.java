@@ -56,9 +56,9 @@ public class BooksApiRoute extends RouteBuilder {
             .maximumRedeliveries(0)
             .log(LoggingLevel.ERROR, logName, ">>> Caught exception: ${exception.stacktrace}")
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()))
-			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.INTERNAL_SERVER_ERROR.getReasonPhrase()))
-			.setHeader(Exchange.CONTENT_TYPE, constant(MediaType.TEXT_PLAIN))
-            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
+			.setHeader(Exchange.HTTP_RESPONSE_TEXT, simple(Response.Status.INTERNAL_SERVER_ERROR.getReasonPhrase()))
+			.setHeader(Exchange.CONTENT_TYPE, simple(MediaType.TEXT_PLAIN))
+            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, simple("{{deployment.location}}"))
 			.setBody(simple("${exception.message}"))
             .log(LoggingLevel.INFO, logName, ">>> OUT: headers:[${headers}] - body:[${body}]")
         ;
@@ -77,8 +77,8 @@ public class BooksApiRoute extends RouteBuilder {
                 .constant(books)
             .marshal().json(JsonLibrary.Jackson, true)
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.OK.getStatusCode()))
-			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.OK.getReasonPhrase()))
-            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
+			.setHeader(Exchange.HTTP_RESPONSE_TEXT, simple(Response.Status.OK.getReasonPhrase()))
+            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, simple("{{deployment.location}}"))
             .log(LoggingLevel.INFO, logName, ">>> Sending getBooks-v1 response: ${body}")
         ;
 
@@ -94,8 +94,8 @@ public class BooksApiRoute extends RouteBuilder {
                 .constant(books)
             .marshal().json(JsonLibrary.Jackson, true)
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.CREATED.getStatusCode()))
-			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.CREATED.getReasonPhrase()))
-            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
+			.setHeader(Exchange.HTTP_RESPONSE_TEXT, simple(Response.Status.CREATED.getReasonPhrase()))
+            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, simple("{{deployment.location}}"))
             .log(LoggingLevel.INFO, logName, ">>> Sending addNewBook-v1  response: ${body}")
         ;
 
