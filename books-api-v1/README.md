@@ -255,42 +255,48 @@ Used environment:
 - **RAM**: 32Gb
 - **Container runtime for native builds**: podman v5.7.0
 
-### JVM mode -> _started in **1.730s**_
+### JVM mode -> _started in **1.507s**_
 
 ```shell
 # java -Dquarkus.kubernetes-config.enabled=false -jar target/quarkus-app/quarkus-run.jar
 [...]
-2025-12-01 16:26:03,184 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Apache Camel 4.14.0.redhat-00009 (books-api-v1) is starting
-2025-12-01 16:26:03,263 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.op.OpenTelemetryTracer] (main) OpenTelemetryTracer enabled using instrumentation-name: camel
-2025-12-01 16:26:03,264 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Using ThreadPoolFactory: org.apache.camel.opentelemetry.OpenTelemetryInstrumentedThreadPoolFactory@4e61e4c2
-2025-12-01 16:26:03,308 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main) Property-placeholders summary
-2025-12-01 16:26:03,308 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main)     [MicroProfilePropertiesSource] deployment.location = OpenShift
-2025-12-01 16:26:03,309 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Routes startup (total:3 rest-dsl:1)
-2025-12-01 16:26:03,309 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started getBooks-v1 (direct://getBooks-v1)
-2025-12-01 16:26:03,309 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started addNewBook-v1 (direct://addNewBook-v1)
-2025-12-01 16:26:03,309 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started route1 (rest-openapi://classpath:META-INF/openapi.yaml)
-2025-12-01 16:26:03,309 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Apache Camel 4.14.0.redhat-00009 (books-api-v1) started in 125ms (build:0ms init:0ms start:125ms boot:1s201ms)
-2025-12-01 16:26:03,344 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) books-api-v1 1.0.0 on JVM (powered by Quarkus 3.27.0.redhat-00001) started in 1.730s. Listening on: http://0.0.0.0:8080. Management interface listening on http://0.0.0.0:9876.
-2025-12-01 16:26:03,345 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) Profile prod activated. 
-2025-12-01 16:26:03,345 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) Installed features: [camel-attachments, camel-core, camel-direct, camel-jackson, camel-jolokia, camel-log, camel-management, camel-micrometer, camel-microprofile-health, camel-observability-services, camel-openapi-java, camel-opentelemetry, camel-platform-http, camel-rest, camel-rest-openapi, camel-xml-io-dsl, cdi, config-yaml, kubernetes, kubernetes-client, micrometer, opentelemetry, rest, smallrye-context-propagation, smallrye-health, smallrye-openapi, swagger-ui, vertx]
+2025-12-02 11:25:09,692 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.MainSupport] (main) Apache Camel (Main) 4.14.0.redhat-00009 is starting
+2025-12-02 11:25:09,744 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main) Auto-configuration summary
+2025-12-02 11:25:09,744 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main)     [MicroProfilePropertiesSource] camel.context.name = books-api-v1
+2025-12-02 11:25:09,883 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Apache Camel 4.14.0.redhat-00009 (books-api-v1) is starting
+2025-12-02 11:25:09,934 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.op.OpenTelemetryTracer] (main) OpenTelemetryTracer enabled using instrumentation-name: camel
+2025-12-02 11:25:09,935 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Using ThreadPoolFactory: org.apache.camel.opentelemetry.OpenTelemetryInstrumentedThreadPoolFactory@4e61e4c2
+2025-12-02 11:25:09,976 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main) Property-placeholders summary
+2025-12-02 11:25:09,977 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main)     [MicroProfilePropertiesSource] deployment.location = OpenShift
+2025-12-02 11:25:09,977 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Routes startup (total:3 rest-dsl:1)
+2025-12-02 11:25:09,978 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started getBooks-v1 (direct://getBooks-v1)
+2025-12-02 11:25:09,978 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started addNewBook-v1 (direct://addNewBook-v1)
+2025-12-02 11:25:09,978 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started route1 (rest-openapi://classpath:META-INF/openapi.yaml)
+2025-12-02 11:25:09,978 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Apache Camel 4.14.0.redhat-00009 (books-api-v1) started in 94ms (build:0ms init:0ms start:94ms boot:1s65ms)
+2025-12-02 11:25:10,011 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) books-api-v1 1.0.0 on JVM (powered by Quarkus 3.27.0.redhat-00001) started in 1.507s. Listening on: http://0.0.0.0:8080. Management interface listening on http://0.0.0.0:9876.
+2025-12-02 11:25:10,011 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) Profile prod activated. 
+2025-12-02 11:25:10,011 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) Installed features: [camel-attachments, camel-core, camel-direct, camel-jackson, camel-jolokia, camel-log, camel-management, camel-micrometer, camel-microprofile-health, camel-observability-services, camel-openapi-java, camel-opentelemetry, camel-platform-http, camel-rest, camel-rest-openapi, camel-xml-io-dsl, cdi, config-yaml, kubernetes, kubernetes-client, micrometer, opentelemetry, rest, smallrye-context-propagation, smallrye-health, smallrye-openapi, swagger-ui, vertx]
 ```
 
-### Native mode -> _started in **0.198s**_
+### Native mode -> _started in **0.150s**_
 
 ```shell
 # podman run --rm --name books-api-v1 -p 8080:8080,9876:9876 -e QUARKUS_KUBERNETES-CONFIG_ENABLED=false -e QUARKUS_OTEL_EXPORTER_OTLP_ENDPOINT=http://host.containers.internal:4317 books-api-v1
 [...]
-2025-12-01 15:26:32,553 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Apache Camel 4.14.0.redhat-00009 (books-api-v1) is starting
-2025-12-01 15:26:32,574 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.op.OpenTelemetryTracer] (main) OpenTelemetryTracer enabled using instrumentation-name: camel
-2025-12-01 15:26:32,574 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Using ThreadPoolFactory: org.apache.camel.opentelemetry.OpenTelemetryInstrumentedThreadPoolFactory@30ca66c5
-2025-12-01 15:26:32,607 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main) Property-placeholders summary
-2025-12-01 15:26:32,607 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main)     [MicroProfilePropertiesSource] deployment.location = OpenShift
-2025-12-01 15:26:32,607 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Routes startup (total:3 rest-dsl:1)
-2025-12-01 15:26:32,607 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started getBooks-v1 (direct://getBooks-v1)
-2025-12-01 15:26:32,607 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started addNewBook-v1 (direct://addNewBook-v1)
-2025-12-01 15:26:32,607 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started route1 (rest-openapi://classpath:META-INF/openapi.yaml)
-2025-12-01 15:26:32,607 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Apache Camel 4.14.0.redhat-00009 (books-api-v1) started in 54ms (build:0ms init:0ms start:54ms)
-2025-12-01 15:26:32,608 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) books-api-v1 1.0.0 native (powered by Quarkus 3.27.0.redhat-00001) started in 0.198s. Listening on: http://0.0.0.0:8080. Management interface listening on http://0.0.0.0:9876.
-2025-12-01 15:26:32,608 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) Profile prod activated. 
-2025-12-01 15:26:32,608 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) Installed features: [camel-attachments, camel-core, camel-direct, camel-jackson, camel-jolokia, camel-log, camel-management, camel-micrometer, camel-microprofile-health, camel-observability-services, camel-openapi-java, camel-opentelemetry, camel-platform-http, camel-rest, camel-rest-openapi, camel-xml-io-dsl, cdi, config-yaml, kubernetes, kubernetes-client, micrometer, opentelemetry, rest, smallrye-context-propagation, smallrye-health, smallrye-openapi, swagger-ui, vertx]
+2025-12-02 10:28:19,863 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.MainSupport] (main) Apache Camel (Main) 4.14.0.redhat-00009 is starting
+2025-12-02 10:28:19,869 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main) Auto-configuration summary
+2025-12-02 10:28:19,869 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main)     [MicroProfilePropertiesSource] camel.context.name = books-api-v1
+2025-12-02 10:28:19,900 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Apache Camel 4.14.0.redhat-00009 (books-api-v1) is starting
+2025-12-02 10:28:19,923 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.op.OpenTelemetryTracer] (main) OpenTelemetryTracer enabled using instrumentation-name: camel
+2025-12-02 10:28:19,924 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Using ThreadPoolFactory: org.apache.camel.opentelemetry.OpenTelemetryInstrumentedThreadPoolFactory@49bc1f6c
+2025-12-02 10:28:19,957 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main) Property-placeholders summary
+2025-12-02 10:28:19,957 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.ma.BaseMainSupport] (main)     [MicroProfilePropertiesSource] deployment.location = OpenShift
+2025-12-02 10:28:19,958 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Routes startup (total:3 rest-dsl:1)
+2025-12-02 10:28:19,958 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started getBooks-v1 (direct://getBooks-v1)
+2025-12-02 10:28:19,958 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started addNewBook-v1 (direct://addNewBook-v1)
+2025-12-02 10:28:19,958 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main)     Started route1 (rest-openapi://classpath:META-INF/openapi.yaml)
+2025-12-02 10:28:19,958 INFO  traceId=, parentId=, spanId=, sampled= [or.ap.ca.im.en.AbstractCamelContext] (main) Apache Camel 4.14.0.redhat-00009 (books-api-v1) started in 57ms (build:0ms init:0ms start:57ms)
+2025-12-02 10:28:19,960 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) books-api-v1 1.0.0 native (powered by Quarkus 3.27.0.redhat-00001) started in 0.150s. Listening on: http://0.0.0.0:8080. Management interface listening on http://0.0.0.0:9876.
+2025-12-02 10:28:19,960 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) Profile prod activated. 
+2025-12-02 10:28:19,960 INFO  traceId=, parentId=, spanId=, sampled= [io.quarkus] (main) Installed features: [camel-attachments, camel-core, camel-direct, camel-jackson, camel-jolokia, camel-log, camel-management, camel-micrometer, camel-microprofile-health, camel-observability-services, camel-openapi-java, camel-opentelemetry, camel-platform-http, camel-rest, camel-rest-openapi, camel-xml-io-dsl, cdi, config-yaml, kubernetes, kubernetes-client, micrometer, opentelemetry, rest, smallrye-context-propagation, smallrye-health, smallrye-openapi, swagger-ui, vertx]
 ```
