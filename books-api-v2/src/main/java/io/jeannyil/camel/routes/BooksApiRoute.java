@@ -2,7 +2,6 @@ package io.jeannyil.camel.routes;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.Collections;
@@ -15,6 +14,8 @@ import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jsonvalidator.JsonValidationException;
 import org.apache.camel.model.dataformat.JsonLibrary;
+
+import io.jeannyil.camel.constants.APIConstants;
 import io.jeannyil.models.Author;
 import io.jeannyil.models.BookV2;
 
@@ -57,7 +58,7 @@ public class BooksApiRoute extends RouteBuilder {
 			.handled(true)
 			.maximumRedeliveries(0)
 			.log(LoggingLevel.ERROR, logName, ">>> Caught exception: ${exception.stacktrace}")
-            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
+            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, simple("{{deployment.location}}"))
 			.to("direct:common-500")
 			.log(LoggingLevel.INFO, logName, ">>> OUT: headers:[${headers}] - body:[${body}]").id("log-api-unexpected-response")
 		;
@@ -66,12 +67,12 @@ public class BooksApiRoute extends RouteBuilder {
 			.handled(true)
 			.maximumRedeliveries(0)
 			.log(LoggingLevel.ERROR, logName, ">>> Caught exception after JSON Schema Validation: ${exception.stacktrace}")
-			.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.BAD_REQUEST.getStatusCode()))
-			.setProperty(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.BAD_REQUEST.getReasonPhrase()))
-            .setProperty("errorId", constant(Response.Status.BAD_REQUEST.getStatusCode()))
-            .setProperty("errorDescription", constant(Response.Status.BAD_REQUEST.getReasonPhrase()))
-            .setProperty("errorMessage", simple("${exception.message}"))
-			.setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
+            .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.BAD_REQUEST.getStatusCode()))
+			.setHeader(Exchange.HTTP_RESPONSE_TEXT, simple(Response.Status.BAD_REQUEST.getReasonPhrase()))
+            .setProperty(APIConstants.ERROR_ID, simple("${headers.CamelHttpResponseCode}"))
+            .setProperty(APIConstants.ERROR_DESCRIPTION, simple("${headers.CamelHttpResponseText}"))
+            .setProperty(APIConstants.ERROR_MESSAGE, simple("${exception.message}"))
+			.setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, simple("{{deployment.location}}"))
 			.to("direct:custom-http-error")
 			.log(LoggingLevel.INFO, logName, ">>> headers:[${headers}] - body:[${body}]")
 		;
@@ -90,8 +91,8 @@ public class BooksApiRoute extends RouteBuilder {
                 .constant(books)
             .marshal().json(JsonLibrary.Jackson, true)
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.OK.getStatusCode()))
-			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.OK.getReasonPhrase()))
-            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
+			.setHeader(Exchange.HTTP_RESPONSE_TEXT, simple(Response.Status.OK.getReasonPhrase()))
+            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, simple("{{deployment.location}}"))
             .log(LoggingLevel.INFO, logName, ">>> Sending getBooks-v2 response: ${body}")
         ;
 
@@ -109,8 +110,8 @@ public class BooksApiRoute extends RouteBuilder {
                 .constant(books)
             .marshal().json(JsonLibrary.Jackson, true)
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.CREATED.getStatusCode()))
-			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.CREATED.getReasonPhrase()))
-            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, constant("{{deployment.location}}"))
+			.setHeader(Exchange.HTTP_RESPONSE_TEXT, simple(Response.Status.CREATED.getReasonPhrase()))
+            .setHeader(DEPLOYMENT_HTTP_LOCATION_HEADER, simple("{{deployment.location}}"))
             .log(LoggingLevel.INFO, logName, ">>> Sending addNewBook-v2  response: ${body}")
         ;
 

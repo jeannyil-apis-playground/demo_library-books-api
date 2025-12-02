@@ -28,8 +28,8 @@ public class HttpErrorRoute extends RouteBuilder {
 			.routeId("common-500-http-code-route")
 			.log(LoggingLevel.INFO, logName, ">>> IN: headers:[${headers}] - body:[${body}]")
 			.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()))
-			.setHeader(Exchange.HTTP_RESPONSE_TEXT, constant(Response.Status.INTERNAL_SERVER_ERROR.getReasonPhrase()))
-			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
+			.setHeader(Exchange.HTTP_RESPONSE_TEXT, simple(Response.Status.INTERNAL_SERVER_ERROR.getReasonPhrase()))
+			.setHeader(Exchange.CONTENT_TYPE, simple("application/json"))
 			.setBody()
 				.method("errorResponseHelper", 
 						"generateErrorResponse(${headers.CamelHttpResponseCode}, ${headers.CamelHttpResponseText}, ${exception})")
@@ -42,18 +42,14 @@ public class HttpErrorRoute extends RouteBuilder {
 		/**
 		 * Route that returns a custom error response in JSON format
 		 * The following properties are expected to be set on the incoming Camel Exchange:
-		 * <br>- errorId ({@link io.jeannyil.quarkus.camel.jsonvalidation.constants.APIConstants#ERROR_ID})
-		 * <br>- errorDescription ({@link io.jeannyil.quarkus.camel.jsonvalidation.constants.APIConstants#ERROR_DESCRIPTION })
-		 * <br>- errorMessage ({@link io.jeannyil.quarkus.camel.jsonvalidation.constants.APIConstants#ERROR_MESSAGE })
-		 * <br>- httpStatusCode ({@link io.jeannyil.quarkus.camel.jsonvalidation.constants.APIConstants#HTTP_STATUS_CODE })
-		 * <br>- httpStatusMsg ({@link io.jeannyil.quarkus.camel.jsonvalidation.constants.APIConstants#HTTP_STATUS_MSG })
+		 * <br>- errorId ({@link  io.jeannyil.camel.constants.APIConstants#ERROR_ID})
+		 * <br>- errorDescription ({@link  io.jeannyil.camel.constants.APIConstants#ERROR_DESCRIPTION })
+		 * <br>- errorMessage ({@link  io.jeannyil.camel.constants.APIConstants#ERROR_MESSAGE })
 		 */
 		from("direct:custom-http-error")
 			.routeId("custom-http-error-route")
 			.log(LoggingLevel.INFO, logName, ">>> IN: headers:[${headers}] - body:[${body}]")
-			.setHeader(Exchange.HTTP_RESPONSE_CODE, simple("${exchangeProperty.httpStatusCode}"))
-			.setHeader(Exchange.HTTP_RESPONSE_TEXT, simple("${exchangeProperty.httpStatusMsg}"))
-			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
+			.setHeader(Exchange.CONTENT_TYPE, simple("application/json"))
 			.setBody()
 				.method("errorResponseHelper", 
 						"generateErrorResponse(${exchangeProperty.errorId}, ${exchangeProperty.errorDescription}, ${exchangeProperty.errorMessage})")

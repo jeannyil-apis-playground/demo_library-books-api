@@ -133,14 +133,17 @@ paths:
                                 validationResult_400:
                                     value:
                                         error:
-                                            id: '500'
-                                            description: Internal Server Error
-                                            messages: >-
-                                                JSON validation error with 2 errors:  $: propriété requise
-                                                'author' introuvable $: la propriété 'authorName' n'est pas
-                                                définie dans le schéma et le schéma n'autorise pas de
-                                                propriétés supplémentaires.
-                                                Exchange[40653D6A12C355F-0000000000000000]
+                                            id: '400'
+                                            description: Bad Request
+                                            messages:
+                                                - >-
+                                                    JSON validation error with 2 errors:
+
+                                                    $: required property 'author' not found
+
+                                                    $: property 'authorName' is not defined in the schema and
+                                                    the schema does not allow additional properties.
+                                                    Exchange[94595332629B781-0000000000000002]
                     description: '`Membership`JSON data not valid'
                 '500':
                     content:

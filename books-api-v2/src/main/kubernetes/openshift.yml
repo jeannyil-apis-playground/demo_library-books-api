@@ -15,7 +15,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: books-api-v2
-      app.kubernetes.io/version: 1.0.0 
+      app.kubernetes.io/version: 2.0.0 
   endpoints:
     - scheme: http
       targetPort: 9876

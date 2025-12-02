@@ -105,12 +105,12 @@ quarkus:
 
     # native mode configuration
     native:
-    # A comma separated list of Ant-path style patterns to match class names
-    # that should be registered for reflection.
-    # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
-    reflection:
-      include-patterns: java.lang.Exception,org.apache.camel.component.jsonvalidator.JsonValidationException
-
+      # A comma separated list of Ant-path style patterns to match class names
+      # that should be registered for reflection.
+      # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
+      reflection:
+        include-patterns: java.lang.Exception,org.apache.camel.component.jsonvalidator.JsonValidationException
+        
   ## Quarkus native build 
   native:
     # If all character sets should be added to the native image. This increases image size

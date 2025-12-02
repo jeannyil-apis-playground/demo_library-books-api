@@ -1,4 +1,4 @@
-package io.jeannyil.quarkus.camel.jsonvalidation.beans;
+package io.jeannyil.camel.beans;
 
 import java.util.ArrayList;
 
