@@ -180,7 +180,7 @@ java -Dquarkus.kubernetes-config.enabled=false -Dquarkus.otel.exporter.otlp.endp
         ]
         ```
     
-    - `POST` method (:white_check_mark: _valid payload_):
+    - `POST` method (_valid payload_):
         ```shell
         echo '{
             "author": {
@@ -236,7 +236,7 @@ java -Dquarkus.kubernetes-config.enabled=false -Dquarkus.otel.exporter.otlp.endp
         ]
         ```
 
-    - `POST` method (:x: _invalid payload_):
+    - `POST` method (_invalid payload_):
         ```shell
         echo '{
             "authorName": "Sir Isaac Newton",
