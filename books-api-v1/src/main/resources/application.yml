@@ -50,7 +50,8 @@ quarkus:
     # The build config strategy to use
     build-strategy: DOCKER
     # The default Dockerfile to use for jvm builds
-    jvm-dockerfile: src/main/docker/Dockerfile.jvm
+    # jvm-dockerfile: src/main/docker/Dockerfile.jvm
+    jvm-dockerfile: src/main/docker/Containerfile.jvm-hummingbird
     # The default Dockerfile to use for native builds
     native-dockerfile: src/main/docker/Dockerfile.native
     # The number of desired pods
@@ -68,7 +69,6 @@ quarkus:
         cpu: 30m
         memory: 512Mi
       limits:
-        cpu: 500m
         memory: 512Mi
     # Generation of ServiceMonitor resource
     ## By default, a ServiceMonitor resource is generated.
@@ -106,11 +106,11 @@ quarkus:
 
     # native mode configuration
     native:
-    # A comma separated list of Ant-path style patterns to match class names
-    # that should be registered for reflection.
-    # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
-    reflection:
-      include-patterns: java.lang.Exception
+      # A comma separated list of Ant-path style patterns to match class names
+      # that should be registered for reflection.
+      # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
+      reflection:
+        include-patterns: java.lang.Exception
 
   ## Quarkus native build 
   native:

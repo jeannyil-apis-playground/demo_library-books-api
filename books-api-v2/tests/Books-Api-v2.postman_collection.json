@@ -29,12 +29,12 @@
 						},
 						{
 							"key": "accessTokenUrl",
-							"value": "https://sso.apps.ocp4.jnyilimb.eu/realms/poc/protocol/openid-connect/token",
+							"value": "https://sso.apps.sno.jnyilimb.eu/realms/poc/protocol/openid-connect/token",
 							"type": "string"
 						},
 						{
 							"key": "authUrl",
-							"value": "https://sso.apps.ocp4.jnyilimb.eu/realms/poc/protocol/openid-connect/auth",
+							"value": "https://sso.apps.sno.jnyilimb.eu/realms/poc/protocol/openid-connect/auth",
 							"type": "string"
 						},
 						{
@@ -113,7 +113,7 @@
 						},
 						{
 							"key": "accessTokenUrl",
-							"value": "https://sso.apps.ocp4.jnyilimb.eu/realms/poc/protocol/openid-connect/token",
+							"value": "https://sso.apps.sno.jnyilimb.eu/realms/poc/protocol/openid-connect/token",
 							"type": "string"
 						},
 						{
